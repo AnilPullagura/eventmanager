@@ -1,0 +1,57 @@
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+}
+.failure-container {
+  text-align: center;
+}
+.failure-container button {
+  background-color: blue;
+  outline: none;
+  border: none;
+}
+.events-container {
+  border: 1px solid rgb(223, 222, 222);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 20px;
+  box-shadow: 0px 0 1px gray;
+}
+.events-container h1 {
+  font-size: 28px;
+}
+.event-item::marker {
+  color: rgb(13, 205, 13);
+}
+.event-item {
+  margin: 10px;
+  border: 1px solid rgb(222, 221, 221);
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0px 0 1px rgb(222, 221, 221);
+}
+.event-details {
+  display: flex;
+  justify-content: space-between;
+  color: black;
+}
+
+.event-location {
+  color: grey;
+}
+.event-date {
+  color: gray;
+}
+.link {
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .events-list {
+    height: 60vh;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+}

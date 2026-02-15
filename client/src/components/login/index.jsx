@@ -1,5 +1,7 @@
 import { useNavigate, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import EventContext from "../../context";
+
 import Cookies from "js-cookie";
 import "./index.css";
 
@@ -10,6 +12,8 @@ const Login = () => {
   const [password, setPass] = useState("");
   const [errMsg, setMSg] = useState("");
   const navigate = useNavigate();
+
+  const { loginUser } = useContext(EventContext);
 
   const api = "https://eventmanager-api.onrender.com";
 
@@ -34,6 +38,8 @@ const Login = () => {
       const response = await fetch(url, options);
       if (response.ok) {
         const data = await response.json();
+        Cookies.set("user", data.user.id, { expires: 20 });
+        loginUser(data.user.id);
         setToken(data.token);
       } else {
         const data = await response.json();

@@ -1,20 +1,52 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import Cookies from "js-cookie";
+import EventContext from "./context";
 import Login from "./components/login";
 import Home from "./components/Home";
+import History from "./components/History";
+import EventDetails from "./components/EventDetails";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 
 const App = () => {
-  const a = null;
+  const [user, setUser] = useState(Cookies.get("user"));
+  const [historyEvents, setHistory] = useState([]);
+
+  const addToHistory = (event) => {
+    setHistory((prev) => [...prev, event]);
+  };
+
+  const removerfromHistory = (eventId) => {
+    setHistory((prev) => prev.filter((each) => each._id !== eventId));
+  };
+
+  const loginUser = (userDetails) => {
+    setUser(userDetails);
+  };
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Home />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <EventContext.Provider
+      value={{
+        user,
+        loginUser,
+        historyEvents,
+        addToHistory,
+        removerfromHistory,
+      }}
+    >
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/events/:id" element={<EventDetails />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </EventContext.Provider>
   );
 };
 
