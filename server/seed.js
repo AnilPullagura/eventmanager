@@ -58,11 +58,60 @@ const sampleEvents = [
     availableSeats: 100,
     category: "Education",
   },
+  {
+    name: "City Marathon",
+    organizer: "Health First",
+    date: new Date("2024-09-01T06:00:00"),
+    location: "Boston, MA",
+    description: "Annual city marathon for all ages.",
+    capacity: 2000,
+    availableSeats: 2000,
+    category: "Sports",
+  },
+  {
+    name: "Food Truck Festival",
+    organizer: "Tasty Eats",
+    date: new Date("2024-08-25T11:00:00"),
+    location: "Portland, OR",
+    description: "Best food trucks from around the city.",
+    capacity: 1500,
+    availableSeats: 1500,
+    category: "Food",
+  },
+  {
+    name: "Indie Film Festival",
+    organizer: "Cinema Club",
+    date: new Date("2024-10-12T16:00:00"),
+    location: "Los Angeles, CA",
+    description: "Screening of independent films.",
+    capacity: 400,
+    availableSeats: 400,
+    category: "Entertainment",
+  },
+  {
+    name: "Gaming Expo",
+    organizer: "Gamer Zone",
+    date: new Date("2024-11-20T10:00:00"),
+    location: "Seattle, WA",
+    description: "Latest in video games and e-sports.",
+    capacity: 3000,
+    availableSeats: 3000,
+    category: "Technology",
+  },
+  {
+    name: "Book Fair",
+    organizer: "Readers Block",
+    date: new Date("2024-09-05T09:00:00"),
+    location: "Denver, CO",
+    description: "Meet authors and discover new books.",
+    capacity: 600,
+    availableSeats: 600,
+    category: "Education",
+  },
 ];
 
 const importData = async () => {
   try {
-    await Event.deleteMany();
     await Event.insertMany(sampleEvents);
 
     console.log("Data Imported!");
