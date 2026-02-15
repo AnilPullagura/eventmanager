@@ -21,12 +21,10 @@ exports.registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    res
-      .status(201)
-      .json({
-        message: "User registered successfully",
-        user: { id: newUser._id, name: newUser.name, email: newUser.email },
-      });
+    res.status(201).json({
+      message: "User registered successfully",
+      user: { id: newUser._id, name: newUser.name, email: newUser.email },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Registration failed" });
@@ -51,14 +49,20 @@ exports.loginUser = async (req, res) => {
     }
 
     const token = generator({ email: user.email, userId: user._id });
-    res
-      .status(200)
-      .json({
-        token,
-        user: { id: user._id, name: user.name, email: user.email },
-      });
+    res.status(200).json({
+      token,
+      user: { id: user._id, name: user.name, email: user.email },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Login failed" });
   }
+};
+
+exports.fetchUser = async (req, res) => {
+  const { user } = req.body;
+  const details = await User.findOne({ user });
+  res.status(200).json({
+    user_details: { details },
+  });
 };
