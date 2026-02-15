@@ -8,5 +8,5 @@ const {
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/user", fetchUser);
+router.post("/user", fetchUser);
 module.exports = router;
