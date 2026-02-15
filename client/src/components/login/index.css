@@ -1,0 +1,199 @@
+@media (max-width: 767px) {
+  .login-container {
+    display: none;
+  }
+  .login-form {
+    background-color: aliceblue;
+    padding: 20px 10px 10px 10px;
+    margin: auto;
+    border-radius: 15px;
+  }
+  .err-msg {
+    color: red;
+    font-size: 12px;
+  }
+  .login-box {
+    background-image: linear-gradient(rgb(135, 206, 235), rgb(17, 0, 255));
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+  }
+  .login-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 85vw;
+  }
+  .login-section input {
+    padding: 10px;
+    border: 1px solid #cccc;
+    border-radius: 10px;
+    background-color: transparent;
+    outline: none;
+    color: gray;
+  }
+  .login-section input:focus {
+    border: 2px solid rgb(135, 206, 235);
+  }
+  .login-section button {
+    background-image: linear-gradient(
+      to right,
+      rgb(17, 0, 255),
+      rgb(135, 206, 235)
+    );
+    border: 0px;
+    border-radius: 15px;
+    margin-top: 10px;
+    outline: none;
+  }
+  .login-section p {
+    color: gray;
+    text-align: center;
+  }
+  .login-section p span {
+    color: rgb(17, 0, 255);
+    cursor: pointer;
+  }
+  .register-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 85vw;
+  }
+  .register-section input {
+    border: 1px solid #cccc;
+    border-radius: 10px;
+    padding: 10px;
+    color: gray;
+    outline: none;
+    background-color: transparent;
+  }
+  .register-section input:focus {
+    border: 2px solid rgb(135, 206, 235);
+  }
+  .register-section button {
+    background-image: linear-gradient(
+      to right,
+      rgb(17, 0, 255),
+      rgb(135, 206, 235)
+    );
+    border: none;
+    outline: none;
+  }
+  .register-section p {
+    color: gray;
+    text-align: center;
+  }
+  .register-section p span {
+    color: rgb(17, 0, 255);
+    cursor: pointer;
+  }
+}
+
+@media (min-width: 768px) {
+  .err-msg {
+    color: red;
+    font-size: 12px;
+  }
+  .login-box {
+    display: flex;
+    width: 100vw;
+  }
+  .login-container {
+    flex: 2;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(rgb(135, 206, 235), rgb(17, 0, 255));
+  }
+  .login-container h1 span {
+    color: rgb(87, 198, 241);
+  }
+  .login-form {
+    flex: 1;
+    height: 100vh;
+    background-color: aliceblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .login-section {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    width: 80%;
+  }
+  .login-section input {
+    padding: 10px;
+    border: 1px solid #cccc;
+    border-radius: 10px;
+    background-color: transparent;
+    outline: none;
+    color: gray;
+  }
+  .login-section input:focus {
+    border: 2px solid rgb(135, 206, 235);
+  }
+  .login-section button {
+    background-image: linear-gradient(
+      to right,
+      rgb(17, 0, 255),
+      rgb(135, 206, 235)
+    );
+    border: 0px;
+    border-radius: 15px;
+    margin-top: 10px;
+    outline: none;
+  }
+  .login-section button:hover {
+    background-image: linear-gradient(
+      to left,
+      rgb(17, 0, 255),
+      rgb(135, 206, 235)
+    );
+  }
+  .login-section p {
+    color: gray;
+    text-align: center;
+  }
+  .login-section p span {
+    color: rgb(17, 0, 255);
+    cursor: pointer;
+  }
+  .register-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+  }
+  .register-section input {
+    border: 1px solid #cccc;
+    border-radius: 10px;
+    padding: 10px;
+    color: gray;
+    outline: none;
+    background-color: transparent;
+  }
+  .register-section input:focus {
+    border: 2px solid rgb(135, 206, 235);
+  }
+  .register-section button {
+    background-image: linear-gradient(
+      to right,
+      rgb(17, 0, 255),
+      rgb(135, 206, 235)
+    );
+    border: none;
+    outline: none;
+  }
+  .register-section p {
+    color: gray;
+    text-align: center;
+  }
+  .register-section p span {
+    color: rgb(17, 0, 255);
+    cursor: pointer;
+  }
+}
