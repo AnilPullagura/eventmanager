@@ -60,9 +60,20 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.fetchUser = async (req, res) => {
-  const { user } = req.body;
-  const details = await User.findOne({ user });
-  res.status(200).json({
-    user_details: { details },
-  });
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID required" });
+    }
+    const details = await User.findById(userId).select("-password");
+    if (!details) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      user_details: details,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ message: "Server Error" });
+  }
 };
