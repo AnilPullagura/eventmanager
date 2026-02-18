@@ -72,7 +72,7 @@ The backend uses **JWT (JSON Web Token)** for securing endpoints.
 | :------- | :---------- | :-------------------------------------------------- | :-------------------------- |
 | **POST** | `/register` | Register a new user. Hashes password before saving. | `{ name, email, password }` |
 | **POST** | `/login`    | Authenticate user. Returns JWT and user info.       | `{ email, password }`       |
-| **POST** | `/user`     | Fetch user details by ID.                           | `{ userId }`                |
+| **POST** | `api/user/:id`     | Fetch user details by ID.                           | `{ userId }`                |
 
 ### 2. Event Routes (`/api/events`)
 
