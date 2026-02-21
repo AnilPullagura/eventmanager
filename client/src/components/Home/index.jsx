@@ -43,10 +43,10 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Header data={userdata} />
+      <Header />
       <div className="home-content">
         <div className="home-top-box">
-          <h1>Welcome to Event Pro</h1>
+          <h1>Welcome {userdata.name}</h1>
           <button type="button" onClick={logout}>
             <MdLogout />
             Logout

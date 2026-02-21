@@ -9,12 +9,11 @@ import { MdLogout } from "react-icons/md";
 
 import "./index.css";
 
-const Header = (props) => {
+const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const { historyEvents } = useContext(EventContext);
-  const { data } = props;
 
   const logout = () => {
     Cookies.remove("jwt_token");
