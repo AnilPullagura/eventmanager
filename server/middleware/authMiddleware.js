@@ -21,9 +21,16 @@ const protect = async (req, res, next) => {
     }
     next();
   } catch (er) {
-    console.error(er);
     res.status(500).json({ message: "token is not valid" });
   }
 };
 
-module.exports = { protect };
+const admin = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    res.status(401).json({ message: "Not authorized as an admin" });
+  }
+};
+
+module.exports = { protect, admin };

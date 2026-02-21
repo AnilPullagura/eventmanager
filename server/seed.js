@@ -113,7 +113,6 @@ const sampleEvents = [
 const importData = async () => {
   try {
     await Event.insertMany(sampleEvents);
-
     console.log("Data Imported!");
     process.exit();
   } catch (error) {

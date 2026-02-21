@@ -51,7 +51,12 @@ exports.loginUser = async (req, res) => {
     const token = generator({ email: user.email, userId: user._id });
     res.status(200).json({
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -73,7 +78,6 @@ exports.fetchUser = async (req, res) => {
       user_details: details,
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ message: "Server Error" });
   }
 };

@@ -5,10 +5,14 @@ const {
   registerForEvent,
   cancelRegistration,
   getEventsById,
+  createEvent,
+  deleteEvent,
 } = require("../controllers/eventController");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, admin } = require("../middleware/authMiddleware");
 
 router.get("/", getEvents);
+router.post("/", protect, admin, createEvent);
+router.delete("/:id", protect, admin, deleteEvent);
 
 router.post("/:id/register", protect, registerForEvent);
 router.post("/:id/cancel", protect, cancelRegistration);

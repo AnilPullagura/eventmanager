@@ -114,3 +114,46 @@ exports.cancelRegistration = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+
+exports.createEvent = async (req, res) => {
+  try {
+    const { name, organizer, date, location, description, capacity, category } =
+      req.body;
+    const newEvent = new Event({
+      name,
+      organizer,
+      date,
+      location,
+      description,
+      capacity,
+      availableSeats: capacity,
+      category,
+    });
+    const savedEvent = await newEvent.save();
+    res
+      .status(201)
+      .json({ message: "Event created Successfully", details: savedEvent });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to create event" });
+  }
+};
+
+exports.deleteEvent = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const event = await Event.findByIdAndDelete(id);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    await User.updateMany(
+      { registeredEvents: id },
+      { $pull: { registeredEvents: id } },
+    );
+
+    res.status(200).json({ message: "Event deleted successfully" });
+  } catch (er) {
+    res.status(500).json({ message: "Failed to delete event" });
+  }
+};
