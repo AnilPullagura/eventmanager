@@ -1,106 +1,165 @@
-@media (min-width: 768px) {
-  .header-container {
-    background-color: white;
-    height: 100vh;
-    width: 15vw;
-    padding: 10px;
-    border-right: 1px solid rgb(206, 202, 202);
-  }
-  .header-text {
-    color: black;
-    display: flex;
-    align-items: center;
-    font-size: 24px;
-    margin-bottom: 30px;
-  }
-  .icon {
-    color: blue;
-  }
-  .nav-items {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    height: 80vh;
-  }
-  .nav-link {
-    color: gray;
-    padding: 10px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .active-tab {
-    background-color: rgba(171, 171, 247, 0.388);
-    color: blue;
-  }
-  .mobile-header button {
-    display: none;
-  }
-  .profile {
-    color: black;
-    background-color: rgb(46, 128, 3);
-    border-radius: 1000px;
-    position: fixed;
-    bottom: 0;
-    margin-bottom: 40px;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .profile h1 {
-    font-size: 14px;
-  }
+.header-container {
+  height: 70px;
+  background-color: #ffffffc9;
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: black;
+  width: 100%;
+  padding: 0 5%;
+  border-bottom: 1px solid #e2e8f0;
+  position: fixed;
+  top: 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-container .icon {
+  height: 32px;
+  width: 32px;
+  color: #3a65e9;
+}
+
+.logo-container a {
+  font-size: 20px;
+  color: black;
+  font-weight: bolder;
+  margin: 0;
+  text-decoration: none;
+}
+
+.navigator-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.active {
+  color: #3a65e9;
+}
+
+.non-active {
+  color: #475569;
+}
+
+.nav-link:hover {
+  color: #3a65e9;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logout-btn {
+  background-color: transparent;
+  border: 1px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #475569;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #3a65e9;
+  color: white;
+}
+
+.avatar {
+  height: 35px;
+  width: 35px;
+  background-color: #3a65e9;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
 @media (max-width: 767px) {
-  .header-container {
-    background-color: white;
-    position: fixed;
-    top: 0;
-    width: 100vw;
-    padding: 10px;
-    border-bottom: 1px solid rgb(206, 202, 202);
-  }
-  .profile {
+  .navigator-container {
     display: none;
   }
-  .mobile-header {
+  .profile-container {
+    display: none;
+  }
+  .toggle-mobile {
+    background-color: white;
+    width: 200px;
+    height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .header-text {
-    color: black;
-    display: flex;
-    align-items: center;
-    font-size: 24px;
-    margin-bottom: 30px;
-  }
-  .icon {
-    color: blue;
-  }
-  .nav-items {
-    display: flex;
-
-    gap: 20px;
-  }
-  .nav-link {
-    color: gray;
     padding: 10px;
-    border-radius: 10px;
+    gap: 20px;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -200px;
+    transition: right 0.3s ease;
+  }
+  .open {
+    right: 0;
+  }
+  .toggle-mobile button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: black;
+    align-self: flex-end;
+  }
+  .mobile-profile button {
+    background-color: transparent;
+    outline: none;
+    color: black;
+    border: none;
+    font-size: 20px;
+  }
+  .mobile-profile-section {
     display: flex;
     align-items: center;
+    align-self: flex-end;
+
     gap: 10px;
   }
-  .active-tab {
-    background-color: rgba(171, 171, 247, 0.388);
-    color: blue;
+  .mobile-profile-section p {
+    padding: 10px;
+    order: -1;
+    background-color: #3463f0;
   }
-  .mobile-header button {
-    background-color: blue;
+  .mobile-profile-section button {
+    background-color: #3463f0;
+    display: flex;
+    align-items: center;
+    align-self: center;
+    font-size: 14px;
     color: white;
+    gap: 5px;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-profile {
+    display: none;
+  }
+  .toggle-mobile {
+    display: none;
   }
 }

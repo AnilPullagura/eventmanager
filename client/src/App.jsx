@@ -12,16 +12,6 @@ import "./App.css";
 
 const App = () => {
   const [user, setUser] = useState(Cookies.get("user"));
-  const [historyEvents, setHistory] = useState([]);
-
-  const addToHistory = (event) => {
-    setHistory((prev) => [...prev, event]);
-  };
-
-  const removerfromHistory = (eventId) => {
-    setHistory((prev) => prev.filter((each) => each._id !== eventId));
-  };
-
   const loginUser = (userDetails) => {
     setUser(userDetails);
   };
@@ -31,9 +21,6 @@ const App = () => {
       value={{
         user,
         loginUser,
-        historyEvents,
-        addToHistory,
-        removerfromHistory,
       }}
     >
       <BrowserRouter>

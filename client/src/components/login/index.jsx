@@ -18,7 +18,7 @@ const Login = () => {
   const api = "https://eventmanager-api.onrender.com";
 
   const setToken = (token) => {
-    Cookies.set("jwt_token", token, { expires: 20 });
+    Cookies.set("jwt_token", token, { expires: 2 });
     navigate("/", { replace: true });
   };
 
@@ -38,7 +38,7 @@ const Login = () => {
       const response = await fetch(url, options);
       if (response.ok) {
         const data = await response.json();
-        Cookies.set("user", data.user.id, { expires: 20 });
+        Cookies.set("user", data.user.id, { expires: 2 });
         loginUser(data.user.id);
         setToken(data.token);
       } else {

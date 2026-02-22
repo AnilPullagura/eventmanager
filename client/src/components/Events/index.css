@@ -51,7 +51,7 @@
 @media (min-width: 768px) {
   .events-list {
     height: 60vh;
-    overflow-y: auto;
+
     scrollbar-width: none;
   }
 }

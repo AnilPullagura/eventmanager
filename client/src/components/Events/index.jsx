@@ -12,9 +12,10 @@ const apiConstants = {
 };
 
 const Events = (props) => {
-  const [searchTag, setTag] = useState("");
+  const { searchTag } = props;
   const [events, setEvents] = useState([]);
   const [apistatus, setStatus] = useState(apiConstants.intial);
+
   const api = "https://eventmanager-api.onrender.com";
   const token = Cookies.get("jwt_token");
 
@@ -44,13 +45,14 @@ const Events = (props) => {
   };
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    const handler = setTimeout(() => {
+      fetchEvents();
+    }, 500);
 
-  const searchEvents = (e) => {
-    setTag(e.target.value);
-    fetchEvents();
-  };
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTag]);
 
   const renderLoader = () => {
     return (
@@ -101,19 +103,7 @@ const Events = (props) => {
     }
   };
 
-  return (
-    <div className="events-container">
-      <input
-        className="search-bar"
-        type="search"
-        value={searchTag}
-        onChange={searchEvents}
-        placeholder="Seacrh Here..."
-      />
-
-      {renderContent()}
-    </div>
-  );
+  return <div className="events-container">{renderContent()}</div>;
 };
 
 export default Events;

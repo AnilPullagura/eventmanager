@@ -20,7 +20,6 @@ const EventDetails = () => {
   const [result, setResult] = useState("");
   const [eventDetails, setDetails] = useState({});
   const { id } = useParams();
-  const { addToHistory } = useContext(EventContext);
 
   const api = "https://eventmanager-api.onrender.com";
   const token = Cookies.get("jwt_token");
@@ -73,7 +72,6 @@ const EventDetails = () => {
       if (response.ok) {
         const data = await response.json();
         setResult(data.message);
-        addToHistory(eventDetails);
         getEventsDetails();
       } else {
         const data = await response.json();
@@ -109,9 +107,11 @@ const EventDetails = () => {
       capacity,
       organizer,
       category,
+      imageUrl,
     } = eventDetails;
     return (
       <div className="event-details-container">
+        <img className="event-detail-image" src={imageUrl} alt={name} />
         <h1>{name}</h1>
         <p>{description}</p>
         <p>Location: {location}</p>

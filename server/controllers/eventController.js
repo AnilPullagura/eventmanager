@@ -117,8 +117,16 @@ exports.cancelRegistration = async (req, res) => {
 
 exports.createEvent = async (req, res) => {
   try {
-    const { name, organizer, date, location, description, capacity, category } =
-      req.body;
+    const {
+      name,
+      organizer,
+      date,
+      location,
+      description,
+      capacity,
+      category,
+      imageUrl,
+    } = req.body;
     const newEvent = new Event({
       name,
       organizer,
@@ -128,6 +136,7 @@ exports.createEvent = async (req, res) => {
       capacity,
       availableSeats: capacity,
       category,
+      imageUrl,
     });
     const savedEvent = await newEvent.save();
     res
