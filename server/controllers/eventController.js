@@ -126,6 +126,7 @@ exports.createEvent = async (req, res) => {
       capacity,
       category,
       imageUrl,
+      price,
     } = req.body;
     const newEvent = new Event({
       name,
@@ -137,6 +138,7 @@ exports.createEvent = async (req, res) => {
       availableSeats: capacity,
       category,
       imageUrl,
+      price,
     });
     const savedEvent = await newEvent.save();
     res
