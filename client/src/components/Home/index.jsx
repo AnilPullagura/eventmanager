@@ -28,6 +28,7 @@ const Home = () => {
     if (response.ok) {
       const data = await response.json();
       setData(data.user_details);
+      console.log(data.user_details);
     }
   };
 

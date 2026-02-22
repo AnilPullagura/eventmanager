@@ -1,5 +1,5 @@
 import Header from "../Header";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import EventContext from "../../context";
 import HistoryItem from "./historyItem.jsx";
 
@@ -7,6 +7,7 @@ import "./index.css";
 
 const History = () => {
   const { historyEvents } = useContext(EventContext);
+  const api = "https://eventmanager-api.onrender.com";
 
   return (
     <div className="history-container">
