@@ -1,8 +1,9 @@
-import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import EventContext from "../../context";
 import { TailSpin } from "react-loader-spinner";
+import { CiLocationOn, CiCalendar } from "react-icons/ci";
+import { CgOrganisation } from "react-icons/cg";
 
 import Header from "../Header";
 
@@ -17,6 +18,7 @@ const apiConstants = {
 
 const EventDetails = () => {
   const [apistatus, setStatus] = useState(apiConstants.initial);
+  const [btnstatus, setbtnStatus] = useState(apiConstants.initial);
   const [result, setResult] = useState("");
   const [eventDetails, setDetails] = useState({});
   const { id } = useParams();
@@ -59,6 +61,7 @@ const EventDetails = () => {
   );
 
   const register = async () => {
+    setbtnStatus(apiConstants.loading);
     const url = `${api}/api/events/${id}/register`;
     const options = {
       method: "POST",
@@ -72,11 +75,11 @@ const EventDetails = () => {
       if (response.ok) {
         const data = await response.json();
         setResult(data.message);
-        getEventsDetails();
+        setbtnStatus(apiConstants.success);
       } else {
         const data = await response.json();
         setResult(data.message);
-        getEventsDetails();
+        setbtnStatus(apiConstants.success);
       }
     } catch (er) {
       alert(er);
@@ -96,6 +99,49 @@ const EventDetails = () => {
       </button>
     </div>
   );
+  const eventEnd = () => {
+    setResult("Event has beed ended");
+  };
+
+  const successbtn = () => {
+    return (
+      <button onClick={register} type="button" className="apply-btn bt">
+        Register Now
+      </button>
+    );
+  };
+  const loadingbtn = () => {
+    return (
+      <button onClick={register} type="button" className="apply-btn bt">
+        <TailSpin color="#ffffff" height={50} width={50} />
+      </button>
+    );
+  };
+
+  const renderbtn = () => {
+    switch (btnstatus) {
+      case apiConstants.loading:
+        return loadingbtn();
+      case apiConstants.success:
+        return successbtn();
+      default:
+        return successbtn();
+    }
+  };
+
+  const validateEvent = () => {
+    const { date } = eventDetails;
+    const eventDate = new Date(date);
+    const today = new Date();
+    if (today > eventDate) {
+      return (
+        <button onClick={eventEnd} className="block-btn bt" type="button">
+          Event Ended
+        </button>
+      );
+    }
+    return renderbtn();
+  };
 
   const renderSuccessView = () => {
     const {
@@ -108,23 +154,76 @@ const EventDetails = () => {
       organizer,
       category,
       imageUrl,
+      price,
     } = eventDetails;
     return (
       <div className="event-details-container">
-        <img className="event-detail-image" src={imageUrl} alt={name} />
-        <h1>{name}</h1>
-        <p>{description}</p>
-        <p>Location: {location}</p>
-        <p>Date: {new Date(date).toLocaleDateString()}</p>
-        <p className="seats">
-          Seats: {availableSeats} / {capacity}
-        </p>
-        <p>Organizer:{organizer}</p>
-        <p>Category :{category}</p>
-        {result && <p className="result">{result}</p>}
-        <button type="button" onClick={register}>
-          Register Now
-        </button>
+        <div
+          className="event-image-container"
+          style={{ backgroundImage: `url(${imageUrl})` }}
+        >
+          <p className="event-details-category">{category}</p>
+          <h1 className="event-details-name">{name}</h1>
+          <div className="event-details-top-box">
+            <span className="event-details-box">
+              <CiCalendar className="event-details-icon" />
+              <p>{new Date(date).toLocaleDateString()}</p>
+            </span>
+            <span className="event-details-box">
+              <CiLocationOn className="event-details-icon" />
+              <p>{location}</p>
+            </span>
+          </div>
+        </div>
+        <div className="event-details-bottom-box">
+          <div className="event-details-mini-box">
+            <div className="event-details-mini-top-box">
+              <div className="mini-box">
+                <CiCalendar className="event-details-icon" />
+                <div className="flex-box">
+                  <p className="flex-date">Date</p>
+                  <p>{new Date(date).toLocaleDateString()}</p>
+                </div>
+              </div>
+              <div className="mini-box">
+                <CgOrganisation className="event-details-icon" />
+                <div className="flex-box">
+                  <p className="flex-date">Organizer</p>
+                  <p>{organizer}</p>
+                </div>
+              </div>
+              <div className="mini-box">
+                <CiLocationOn className="event-details-icon" />
+                <div className="flex-box">
+                  <p className="flex-date">Location</p>
+                  <p>{location}</p>
+                </div>
+              </div>
+            </div>
+            <p className="event-details-mini-box-heading">About this Event</p>
+            <p className="event-details-mini-box-desc">{description}</p>
+            <Link to="/">
+              <button className="back-btn" type="button">
+                Back
+              </button>
+            </Link>
+          </div>
+          <div className="register-container-box">
+            <p className="ticket-price">Tickets starting from</p>
+            <p className="per-person-price">
+              ${price}
+              <span>/person</span>
+            </p>
+            {result && <p className="result">{result}</p>}
+            {validateEvent()}
+            <div>
+              <p className="available-seats">Available seats</p>
+              <p className="capacity">
+                {availableSeats}/{capacity}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   };

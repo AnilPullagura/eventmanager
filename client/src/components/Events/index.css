@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh;
 }
 .failure-container {
   text-align: center;
@@ -12,46 +11,260 @@
   outline: none;
   border: none;
 }
+.event-heading {
+  background-color: #3a65e9;
+  width: fit-content;
+  border-radius: 50px;
+  font-size: 16px;
+  padding: 10px;
+}
 .events-container {
-  border: 1px solid rgb(223, 222, 222);
-  border-radius: 10px;
   padding: 10px;
-  margin-top: 20px;
-  box-shadow: 0px 0 1px gray;
-}
-.events-container h1 {
-  font-size: 28px;
-}
-.event-item::marker {
-  color: rgb(13, 205, 13);
-}
-.event-item {
-  margin: 10px;
-  border: 1px solid rgb(222, 221, 221);
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0px 0 1px rgb(222, 221, 221);
-}
-.event-details {
-  display: flex;
-  justify-content: space-between;
-  color: black;
 }
 
-.event-location {
-  color: grey;
+.events-list {
+  margin-left: -40px;
+  list-style-type: none;
 }
-.event-date {
-  color: gray;
+* {
+  box-sizing: border-box;
 }
-.link {
-  text-decoration: none;
+
+@media (min-width: 1200px) {
+  .events {
+    width: 90%;
+    margin: auto;
+  }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+  .events {
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  .event-item {
+    margin: 10px;
+    border: 1.2px solid #e5e7eb;
+    border-radius: 12px;
+  }
+  .event-box {
+    background-color: rgba(255, 255, 255, 1);
+    width: 100%;
+    border-radius: 12px;
+    padding-bottom: 15px;
+  }
+  .event-box:hover {
+    --tw-shadow:
+      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored:
+      0 20px 25px -5px var(--tw-shadow-color),
+      0 8px 10px -6px var(--tw-shadow-color);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow);
+    .event-top {
+      background-size: 110%;
+      transition: background-size 0.3s ease-in-out;
+    }
+
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  .event-top {
+    height: 214px;
+    border-radius: 12px 12px 0 0;
+    background-size: 100%;
+    background-position: center;
+    overflow: hidden;
+    padding: 10px;
+  }
+  .event-top p {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    width: fit-content;
+    font-size: 14px;
+    color: #3a65e9;
+    padding: 5px;
+    font-weight: 600;
+  }
+
+  .event-bottom {
+    background-color: rgba(255, 255, 255, 1);
+    padding: 20px;
+  }
+  .event-bottom:hover .event-name {
+    color: #3a65e9;
+    transition: color 0.3s ease-in-out;
+  }
+  .price-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .price {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(58, 101, 233, 1);
+  }
+  .date {
+    font-size: 14px;
+    color: gray;
+    font-weight: 500;
+  }
+  .event-name {
+    font-size: 1.25rem;
+    color: black;
+    font-weight: 900;
+    line-height: 1.7rem;
+  }
+  .location-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  .location-container p {
+    color: gray;
+    font-size: 14px;
+  }
+  .location-icon {
+    color: gray;
+    height: 18px;
+    width: 18px;
+  }
+  .link {
+    text-decoration: none;
+  }
+  .book-now {
+    background-color: rgba(58, 101, 233, 0.05);
+    border: 1px solid rgba(58, 101, 233, 0.2);
+    color: rgba(58, 101, 233, 1);
+    font-size: 16px;
+    font-weight: bold;
+    width: 90%;
+    margin-left: 5%;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  .book-now:hover {
+    background-color: #3a65e9;
+    color: #ffffff;
+  }
 }
 
 @media (min-width: 768px) {
   .events-list {
-    height: 60vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .event-item {
+    width: 30%;
+    margin: 10px;
+    border: 1.2px solid #e5e7eb;
+    border-radius: 12px;
+  }
+  .event-box {
+    background-color: rgba(255, 255, 255, 1);
+    width: 100%;
+    border-radius: 12px;
+    padding-bottom: 15px;
+  }
+  .event-box:hover {
+    --tw-shadow:
+      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored:
+      0 20px 25px -5px var(--tw-shadow-color),
+      0 8px 10px -6px var(--tw-shadow-color);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow);
+    .event-top {
+      background-size: 110%;
+      transition: background-size 0.3s ease-in-out;
+    }
 
-    scrollbar-width: none;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  .event-top {
+    height: 214px;
+    border-radius: 12px 12px 0 0;
+    background-size: 100%;
+    background-position: center;
+    overflow: hidden;
+    padding: 10px;
+  }
+  .event-top p {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    width: fit-content;
+    font-size: 14px;
+    color: #3a65e9;
+    padding: 5px;
+    font-weight: 600;
+  }
+
+  .event-bottom {
+    background-color: rgba(255, 255, 255, 1);
+    padding: 20px;
+  }
+  .event-bottom:hover .event-name {
+    color: #3a65e9;
+    transition: color 0.3s ease-in-out;
+  }
+  .price-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .price {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(58, 101, 233, 1);
+  }
+  .date {
+    font-size: 14px;
+    color: gray;
+    font-weight: 500;
+  }
+  .event-name {
+    font-size: 1.25rem;
+    color: black;
+    font-weight: 900;
+    line-height: 1.7rem;
+  }
+  .location-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  .location-container p {
+    color: gray;
+    font-size: 14px;
+  }
+  .location-icon {
+    color: gray;
+    height: 18px;
+    width: 18px;
+  }
+  .link {
+    text-decoration: none;
+  }
+  .book-now {
+    background-color: rgba(58, 101, 233, 0.05);
+    border: 1px solid rgba(58, 101, 233, 0.2);
+    color: rgba(58, 101, 233, 1);
+    font-size: 16px;
+    font-weight: bold;
+    width: 90%;
+    margin-left: 5%;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  .book-now:hover {
+    background-color: #3a65e9;
+    color: #ffffff;
   }
 }

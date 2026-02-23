@@ -1,10 +1,15 @@
 @media (min-width: 768px) {
   .event-details-bg-container {
-    display: flex;
+    --tw-bg-opacity: 1;
+    width: 100%;
+    background-color: rgb(246 246 248 / var(--tw-bg-opacity, 1));
+    min-height: 100vh;
   }
   .event-details-content {
-    width: 85vw;
-    background-color: white;
+    width: 100vw;
+    --tw-bg-opacity: 1;
+    background-color: rgb(246 246 248 / var(--tw-bg-opacity, 1));
+    padding: 10px;
   }
   .failure-container {
     display: flex;
@@ -12,6 +17,7 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
+    width: 100vw;
     color: black;
   }
   .loader-container {
@@ -19,39 +25,182 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100vw;
   }
   .event-details-container {
     color: black;
-    width: 90%;
-    margin: 10% auto 10px auto;
-    border-radius: 10px;
-    border: 1px solid rgb(224, 221, 221);
-    padding: 10px;
-    box-shadow: 0px 0 2px rgb(224, 221, 221);
+    width: 80%;
+    margin: auto;
+    margin-top: 80px;
   }
-  .event-details-container p {
-    color: gray;
+  .event-image-container {
+    min-height: 50vh;
+    background-size: cover;
+    background-position: center;
+    padding: 30px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
-  .seats {
-    color: red !important;
-    font-weight: bold;
-  }
+  .event-details-category {
+    background-color: rgba(58, 101, 233, 1);
+    width: fit-content;
+    border-radius: 15px;
+    color: white;
 
-  .event-details-container button {
-    border: 0px;
-    background-image: linear-gradient(to left, rgb(164, 164, 247), blue);
-    outline: none;
-    cursor: pointer;
+    padding: 0px 10px 0px 10px;
+  }
+  .event-details-name {
+    color: white;
+    font-size: 60px;
+    line-height: 1px;
+  }
+  .event-details-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: 600;
+  }
+  .event-details-box p {
+    line-height: 1px;
+  }
+  .event-details-icon {
+    height: 30px;
+    color: rgba(58, 101, 233, 1) !important;
+    width: 30px;
+  }
+  .event-details-top-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .event-details-bottom-box {
+    display: flex;
+    gap: 10px;
+    padding-bottom: 30px;
+  }
+  .event-details-mini-box {
+    flex: 2;
+  }
+  .register-container-box {
+    background-color: white;
+    border-radius: 13px;
+    margin-top: 30px;
+    padding: 20px;
+    flex: 1;
+    --tw-shadow:
+      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored:
+      0 20px 25px -5px var(--tw-shadow-color),
+      0 8px 10px -6px var(--tw-shadow-color);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow);
+  }
+  .event-details-mini-top-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px 20px 10px 20px;
+    border-radius: 13px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(226, 232, 240, 1);
+  }
+  .mini-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .flex-box {
+    line-height: 5px;
+  }
+  .flex-box p {
+    font-weight: 600;
+  }
+  .flex-date {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(100, 116, 139, 1);
+  }
+  .event-details-mini-box-heading {
+    font-size: 24px;
+    font-weight: 700;
+    border-left: 5px solid blue;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .event-details-mini-box-desc {
+    color: gray;
+    font-size: 18px;
+  }
+  .ticket-price {
+    font-size: 16px;
+    color: rgba(100, 116, 139, 1);
+    font-weight: 600;
+  }
+  .per-person-price {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1px;
+  }
+  .per-person-price span {
+    color: rgba(100, 116, 139, 1);
+    font-size: 14px;
+  }
+  .block-btn {
+    cursor: not-allowed;
   }
   .result {
-    color: green !important;
-    font-weight: bold;
+    font-weight: 600;
+    color: orange;
+  }
+  .bt {
+    width: 90%;
+    margin-left: 5%;
+    outline: 0px;
+    border: none;
+    background-color: rgba(58, 101, 233, 1);
+    font-weight: 600;
+    padding: 20px;
+    border-radius: 13px;
+  }
+  .bt:hover {
+    background-color: rgb(87, 126, 243);
+  }
+  .available-seats {
+    color: rgba(100, 116, 139, 1);
+    font-weight: 600;
+  }
+  .capacity {
+    font-size: 34px;
+    color: black;
+    font-weight: 700;
+  }
+  .back-btn {
+    background-color: rgba(58, 101, 233, 1);
+    border-radius: 13px;
+    outline: none;
+    border: none;
+    color: white;
   }
 }
 
 @media (max-width: 767px) {
+  .event-details-bg-container {
+    --tw-bg-opacity: 1;
+    width: 100%;
+    background-color: rgb(246 246 248 / var(--tw-bg-opacity, 1));
+    min-height: 100vh;
+  }
   .event-details-content {
-    background-color: white;
+    width: 100vw;
+    --tw-bg-opacity: 1;
+    background-color: rgb(246 246 248 / var(--tw-bg-opacity, 1));
+    padding: 10px;
   }
   .failure-container {
     display: flex;
@@ -71,29 +220,159 @@
   }
   .event-details-container {
     color: black;
-    width: 100vw;
-    height: 100vh;
-    border-radius: 10px;
-    border: 1px solid rgb(224, 221, 221);
-    padding: 15vh 10px 10px 10px;
-    box-shadow: 0px 0 2px rgb(224, 221, 221);
+    width: 100%;
+    margin: auto;
+    margin-top: 80px;
   }
-  .event-details-container p {
-    color: gray;
+  .event-image-container {
+    min-height: 50vh;
+    background-size: cover;
+    background-position: center;
+    padding: 10px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
-  .seats {
-    color: red !important;
-    font-weight: bold;
+  .event-details-category {
+    background-color: rgba(58, 101, 233, 1);
+    width: fit-content;
+    border-radius: 15px;
+    font-size: 14px;
+    color: white;
+    padding: 0px 10px 0px 10px;
+  }
+  .event-details-name {
+    color: white;
+    font-size: 26px;
+    line-height: 1px;
+  }
+  .event-details-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: 600;
+  }
+  .event-details-box p {
+    line-height: 1px;
+    font-size: 14px;
+  }
+  .event-details-icon {
+    height: 20px;
+    color: rgba(58, 101, 233, 1) !important;
+    width: 20px;
+  }
+  .event-details-top-box {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .event-details-bottom-box {
+    padding-bottom: 20px;
   }
 
-  .event-details-container button {
-    border: 0px;
-    background-image: linear-gradient(to left, rgb(164, 164, 247), blue);
-    outline: none;
-    cursor: pointer;
+  .register-container-box {
+    background-color: white;
+    border-radius: 13px;
+    margin-top: 30px;
+    padding: 20px;
+    --tw-shadow:
+      0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored:
+      0 20px 25px -5px var(--tw-shadow-color),
+      0 8px 10px -6px var(--tw-shadow-color);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow);
+  }
+  .event-details-mini-top-box {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px 20px 10px 20px;
+    border-radius: 13px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(226, 232, 240, 1);
+  }
+  .mini-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .flex-box {
+    line-height: 5px;
+  }
+  .flex-box p {
+    font-weight: 600;
+  }
+  .flex-date {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(100, 116, 139, 1);
+  }
+  .event-details-mini-box-heading {
+    font-size: 24px;
+    font-weight: 700;
+    border-left: 5px solid blue;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .event-details-mini-box-desc {
+    color: gray;
+    font-size: 16px;
+  }
+  .ticket-price {
+    font-size: 16px;
+    color: rgba(100, 116, 139, 1);
+    font-weight: 600;
+  }
+  .per-person-price {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1px;
+  }
+  .per-person-price span {
+    color: rgba(100, 116, 139, 1);
+    font-size: 14px;
+  }
+  .block-btn {
+    cursor: not-allowed;
   }
   .result {
-    color: green !important;
-    font-weight: bold;
+    font-weight: 600;
+    color: orange;
+  }
+  .bt {
+    width: 95%;
+    margin-left: 5%;
+    outline: 0px;
+    border: none;
+    background-color: rgba(58, 101, 233, 1);
+    font-weight: 600;
+    padding: 20px;
+    border-radius: 13px;
+  }
+  .bt:hover {
+    background-color: rgb(87, 126, 243);
+  }
+  .available-seats {
+    color: rgba(100, 116, 139, 1);
+    font-weight: 600;
+  }
+  .capacity {
+    font-size: 30px;
+    color: black;
+    font-weight: 700;
+  }
+  .back-btn {
+    background-color: rgba(58, 101, 233, 1);
+    border-radius: 13px;
+    outline: none;
+    border: none;
+    color: white;
   }
 }

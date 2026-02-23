@@ -5,11 +5,13 @@
 
 @media (min-width: 768px) {
   .home-container {
-    background-color: white;
+    background-color: rgba(241, 245, 249, 1);
+    width: 100vw;
   }
   .home-content {
     padding-top: 70px;
     width: 100vw;
+    min-height: 100vh;
   }
   .home-top-container {
     background-image: url("https://res.cloudinary.com/dxrdjcafp/image/upload/v1771765394/Hero_Section_wyp8i4.png");
@@ -56,6 +58,7 @@
   }
   .home-content {
     padding-top: 70px;
+    min-height: 100vh;
   }
   .home-top-container {
     background-image: url("https://res.cloudinary.com/dxrdjcafp/image/upload/v1771765394/Hero_Section_wyp8i4.png");

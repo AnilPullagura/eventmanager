@@ -82,11 +82,14 @@ const Events = (props) => {
     const eventData = events.data;
 
     return (
-      <ul className="events-list">
-        {eventData.map((event) => (
-          <EventItem key={event._id} details={event} />
-        ))}
-      </ul>
+      <div className="events">
+        <h1 className="event-heading">All Events</h1>
+        <ul className="events-list">
+          {eventData.map((event) => (
+            <EventItem key={event._id} details={event} />
+          ))}
+        </ul>
+      </div>
     );
   };
 

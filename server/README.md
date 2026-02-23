@@ -46,7 +46,9 @@ Represents an event created on the platform.
 - **`description`**: String (Required)
 - **`capacity`**: Number (Total spots)
 - **`availableSeats`**: Number (Remaining spots)
-- **`category`**: String (e.g., Tech, Music)
+- **`category`**: String (e.g., Tech, Music, Art)
+- **`imageUrl`**: String (URL for the event thumbnail)
+- **`price`**: Number (Registration fee or 0 for free)
 - **`attendees`**: Array of ObjectIds (Ref: `User`) - Tracks users registered for this event.
 
 ---
@@ -99,7 +101,7 @@ Protects against brute-force attacks on the login endpoint.
 | **GET**    | `/`             | No         | Get all events.                     | **Search**: Supports `?search=query` to filter by name, location, or category (case-insensitive regex).                                                                                               |
 | **GET**    | `/:id`          | **Yes**    | Get event details by ID.            | Returns 404 if event not found.                                                                                                                                                                       |
 | **GET**    | `/history`      | **Yes**    | Get user's registered events.       | Uses `.populate()` to return full event details for all events the user has registered for.                                                                                                           |
-| **POST**   | `/`             | **Admin**  | Create a new event.                 | Only accessible to users with `admin` role. Sets `availableSeats` equal to `capacity`.                                                                                                                |
+| **POST**   | `/`             | **Admin**  | Create a new event.                 | Only accessible to users with `admin` role. Requires `imageUrl` and `price`. Sets `availableSeats` equal to `capacity`.                                                                               |
 | **DELETE** | `/:id`          | **Admin**  | Delete an event.                    | 1. Removes event from DB.<br>2. Automatically pulls the event ID from all users' `registeredEvents` array to maintain data integrity.                                                                 |
 | **POST**   | `/:id/register` | **Yes**    | Register current user for an event. | 1. Checks if event exists & has seats.<br>2. Checks if user already registered.<br>3. Adds user to `event.attendees`.<br>4. Adds event to `user.registeredEvents`.<br>5. Decrements `availableSeats`. |
 | **POST**   | `/:id/cancel`   | **Yes**    | Cancel registration.                | 1. Checks if user is registered.<br>2. Removes user from `event.attendees`.<br>3. Removes event from `user.registeredEvents`.<br>4. Increments `availableSeats`.                                      |
