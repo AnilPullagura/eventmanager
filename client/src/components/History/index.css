@@ -1,65 +1,279 @@
 @media (min-width: 768px) {
   .history-container {
+    --tw-bg-opacity: 1;
+    background-color: rgb(246 246 248 / var(--tw-bg-opacity, 1));
+    min-height: 100vh;
+    width: 100vw;
+  }
+  .events-history {
     display: flex;
+    margin-left: -40px;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .history-content {
-    padding: 10px;
-    width: 85vw;
-
-    background-color: white;
-    color: black;
+    padding: 70px 10px 10px 10px;
   }
   .history-item {
-    color: black;
     list-style-type: none;
-    border: 1px solid gray;
-    padding: 10px;
     margin: 10px;
-    border-radius: 10px;
+    width: 30%;
+  }
+  .history-item-content {
+    border: 1px solid rgba(226, 232, 240, 1);
+    border-radius: 13px;
+    color: #0f172a;
+  }
+  .history-heading {
+    height: 40px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 40px;
+    color: #0f172a;
+  }
+
+  .ticket-count {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #64748b;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
   }
-  .history-item h1 {
-    color: rgb(49, 49, 49);
+  .history-item-top-box {
+    min-height: 200px;
+    border-radius: 13px 13px 0 0;
+    padding: 20px;
+    background-size: 100%;
+    background-position: center;
+    display: flex;
+    justify-content: flex-end;
   }
-  .history-item p {
-    color: gray;
-  }
-  .history-item button {
-    background-color: rgb(255, 115, 0);
+  .history-item-top-box p {
+    background-color: rgba(58, 102, 233, 0.696);
+    color: white;
     height: fit-content;
-    align-self: flex-end;
+    padding: 0 5px 0 5px;
+    border-radius: 15px;
+    font-size: 10px;
+    backdrop-filter: blur(1px);
+  }
+  .history-item-bottom-box {
+    padding: 10px;
+    min-height: 300px;
+    max-height: 300px;
+    background-color: white;
+    border-radius: 0 0 13px 13px;
+    display: flex;
+    flex-direction: column;
+  }
+  .history-item-bottom-box h1 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    color: #0f172a;
+  }
+  .calender-box {
+    display: flex;
+    line-height: 5px;
+    align-items: center;
+    gap: 10px;
+  }
+  .calender-icon {
+    color: rgba(58, 102, 233, 0.9);
+    height: 20px;
+    width: 20px;
+  }
+  .cancel-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 8px;
+    width: 90%;
+    margin: auto;
+    height: 44px;
+    outline: none !important;
+    background: #ef4444;
+    border-radius: 8px;
+  }
+  .history-item-content:hover {
+    --tw-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored:
+      0 4px 6px -1px var(--tw-shadow-color),
+      0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow);
+    transition: all 0.3s ease-in-out;
+    .history-item-top-box {
+      background-size: 110%;
+      transition: background-size 0.3s ease-in-out;
+    }
+    .history-item-bottom-box h1 {
+      color: rgba(58, 102, 233, 0.9);
+      transition: color 0.3s ease-in-out;
+    }
+  }
+  .cancel-btn:hover {
+    background-color: #ff0505;
+  }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+  .history-content {
+    width: 100%;
+  }
+}
+@media (min-width: 1200px) {
+  .history-content {
+    width: 90%;
+    margin: auto;
   }
 }
 
 @media (max-width: 767px) {
+  .history-container {
+    --tw-bg-opacity: 1;
+    background-color: rgb(246 246 248 / var(--tw-bg-opacity, 1));
+    min-height: 100vh;
+    width: 100vw;
+  }
+  .events-history {
+    margin-left: -40px;
+  }
   .history-content {
-    background-color: white;
-    color: black;
-    height: 100vh;
-    padding-top: 15vh;
+    padding: 70px 10px 10px 10px;
   }
   .history-item {
-    color: black;
     list-style-type: none;
-    border: 1px solid gray;
-    padding: 10px;
-    margin: 10px 10px 10px -30px;
-    border-radius: 10px;
+    margin: 10px;
   }
-  .history-item h1 {
-    color: rgb(49, 49, 49);
+  .history-item-content {
+    border: 1px solid rgba(226, 232, 240, 1);
+    border-radius: 13px;
+    color: #0f172a;
   }
-  .history-item p {
-    color: gray;
+  .history-heading {
+    height: 40px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 40px;
+    color: #0f172a;
   }
-  .history-item button {
-    background-color: rgb(255, 115, 0);
+
+  .ticket-count {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .history-item-top-box {
+    min-height: 200px;
+    border-radius: 13px 13px 0 0;
+    padding: 20px;
+    background-size: 100%;
+    background-position: center;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .history-item-top-box p {
+    background-color: rgba(58, 102, 233, 0.696);
+    color: white;
     height: fit-content;
-    align-self: center;
+    padding: 0 5px 0 5px;
+    border-radius: 15px;
+    font-size: 10px;
+    backdrop-filter: blur(1px);
+  }
+  .history-item-bottom-box {
+    padding: 10px;
+    min-height: 300px;
+    max-height: 300px;
+    background-color: white;
+    border-radius: 0 0 13px 13px;
+    display: flex;
+    flex-direction: column;
+  }
+  .history-item-bottom-box h1 {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 28px;
+    color: #0f172a;
+  }
+  .calender-box {
+    display: flex;
+    line-height: 5px;
+    align-items: center;
+    gap: 10px;
+  }
+  .calender-icon {
+    color: rgba(58, 102, 233, 0.9);
+    height: 20px;
+    width: 20px;
+  }
+  .cancel-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 8px;
+    width: 90%;
+    margin: auto;
+    height: 44px;
+    outline: none !important;
+    background: #ef4444;
+    border-radius: 8px;
+  }
+  .history-item-content:hover {
+    --tw-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored:
+      0 4px 6px -1px var(--tw-shadow-color),
+      0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow:
+      var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+      var(--tw-shadow);
+    transition: all 0.3s ease-in-out;
+    .history-item-top-box {
+      background-size: 110%;
+      transition: background-size 0.3s ease-in-out;
+    }
+    .history-item-bottom-box h1 {
+      color: rgba(58, 102, 233, 0.9);
+      transition: color 0.3s ease-in-out;
+    }
+  }
+  .cancel-btn:hover {
+    background-color: #ff0505;
   }
 }
+
+.failure-container {
+  display: flex;
+  align-items: center;
+  color: #0f172a;
+  justify-content: center;
+}
+
 .no-items {
+  color: #0f172a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  font-size: 24px;
 }

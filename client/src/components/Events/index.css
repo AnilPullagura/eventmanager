@@ -142,7 +142,7 @@
     font-weight: bold;
     width: 90%;
     margin-left: 5%;
-    outline: none;
+    outline: none !important;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
@@ -259,7 +259,7 @@
     font-weight: bold;
     width: 90%;
     margin-left: 5%;
-    outline: none;
+    outline: none !important;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }

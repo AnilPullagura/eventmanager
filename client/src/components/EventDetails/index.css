@@ -151,24 +151,37 @@
     color: rgba(100, 116, 139, 1);
     font-size: 14px;
   }
-  .block-btn {
-    cursor: not-allowed;
-  }
+
   .result {
     font-weight: 600;
     color: orange;
   }
-  .bt {
+  .apply-btn {
     width: 90%;
     margin-left: 5%;
-    outline: 0px;
+    outline: none !important;
+    cursor: pointer;
+    border: none;
+    background-color: rgba(58, 101, 233, 1);
+    font-weight: 600;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+  }
+  .block-btn {
+    width: 90%;
+    margin-left: 5%;
+    outline: none !important;
+    cursor: not-allowed;
     border: none;
     background-color: rgba(58, 101, 233, 1);
     font-weight: 600;
     padding: 20px;
     border-radius: 13px;
   }
-  .bt:hover {
+  .apply-btn:hover {
     background-color: rgb(87, 126, 243);
   }
   .available-seats {
@@ -339,24 +352,37 @@
     color: rgba(100, 116, 139, 1);
     font-size: 14px;
   }
-  .block-btn {
-    cursor: not-allowed;
-  }
+
   .result {
     font-weight: 600;
     color: orange;
   }
-  .bt {
-    width: 95%;
+  .apply-btn {
+    width: 90%;
     margin-left: 5%;
-    outline: 0px;
+    outline: none !important;
+    cursor: pointer;
+    border: none;
+    background-color: rgba(58, 101, 233, 1);
+    font-weight: 600;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+  }
+  .block-btn {
+    width: 90%;
+    margin-left: 5%;
+    outline: none !important;
+    cursor: not-allowed;
     border: none;
     background-color: rgba(58, 101, 233, 1);
     font-weight: 600;
     padding: 20px;
     border-radius: 13px;
   }
-  .bt:hover {
+  .apply-btn:hover {
     background-color: rgb(87, 126, 243);
   }
   .available-seats {

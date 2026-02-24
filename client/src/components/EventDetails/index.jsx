@@ -76,10 +76,12 @@ const EventDetails = () => {
         const data = await response.json();
         setResult(data.message);
         setbtnStatus(apiConstants.success);
+        getEventsDetails();
       } else {
         const data = await response.json();
         setResult(data.message);
         setbtnStatus(apiConstants.success);
+        getEventsDetails();
       }
     } catch (er) {
       alert(er);
@@ -105,15 +107,15 @@ const EventDetails = () => {
 
   const successbtn = () => {
     return (
-      <button onClick={register} type="button" className="apply-btn bt">
+      <button onClick={register} type="button" className="apply-btn ">
         Register Now
       </button>
     );
   };
   const loadingbtn = () => {
     return (
-      <button onClick={register} type="button" className="apply-btn bt">
-        <TailSpin color="#ffffff" height={50} width={50} />
+      <button onClick={register} type="button" className="apply-btn">
+        <TailSpin color="#ffffff" height={30} width={30} />
       </button>
     );
   };
@@ -135,7 +137,7 @@ const EventDetails = () => {
     const today = new Date();
     if (today > eventDate) {
       return (
-        <button onClick={eventEnd} className="block-btn bt" type="button">
+        <button onClick={eventEnd} className="block-btn" type="button">
           Event Ended
         </button>
       );

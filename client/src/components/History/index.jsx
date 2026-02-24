@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { TailSpin } from "react-loader-spinner";
 import Header from "../Header";
 import HistoryItem from "./historyItem.jsx";
+import { BsTicketPerforatedFill } from "react-icons/bs";
 
 import "./index.css";
 
@@ -33,6 +34,7 @@ const History = () => {
       const response = await fetch(url, options);
       if (response.ok) {
         const data = await response.json();
+
         setHistory(data.history_events);
         setStatus(apiConstants.success);
       } else {
@@ -63,7 +65,11 @@ const History = () => {
 
   const renderSuccessView = () => (
     <div className="history-content">
-      <h1>History</h1>
+      <h1 className="history-heading">My Event History</h1>
+      <p className="ticket-count">
+        <BsTicketPerforatedFill />
+        You have {historyEvents.length} active and past event registrations
+      </p>
       {historyEvents.length > 0 ? (
         <ul className="events-history">
           {historyEvents.map((event) => (
