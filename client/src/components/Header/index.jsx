@@ -74,6 +74,14 @@ const Header = () => {
         >
           My Events
         </Link>
+        {userdata.role === "admin" && (
+          <Link
+            to="/admin"
+            className={`nav-link ${currentPath === "/admin" ? "active" : "non-active"}`}
+          >
+            Admin Dashboard
+          </Link>
+        )}
       </div>
     );
   };
@@ -99,6 +107,14 @@ const Header = () => {
         >
           My Events
         </Link>
+        {userdata.role === "admin" && (
+          <Link
+            to="/admin"
+            className={`nav-link ${currentPath === "/admin" ? "active" : "non-active"}`}
+          >
+            Admin Dashboard
+          </Link>
+        )}
       </div>
       <div className="profile-container">
         <button onClick={logout} type="button" className="logout-btn">

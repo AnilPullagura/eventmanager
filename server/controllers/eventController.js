@@ -131,6 +131,21 @@ exports.createEvent = async (req, res) => {
       imageUrl,
       price,
     } = req.body;
+    if (
+      !name ||
+      organizer ||
+      date ||
+      location ||
+      description ||
+      capacity ||
+      category ||
+      imageUrl ||
+      price
+    ) {
+      return res.status(400).json({
+        message: "all fields are required",
+      });
+    }
     const newEvent = new Event({
       name,
       organizer,

@@ -1,29 +1,30 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import AdminHeader from "./adminHeader.jsx";
+
 import "./index.css";
 
 const Admin = () => {
   const [stats, setStats] = useState({
-    totalUsers: 0,
+    totalEvents: 0,
     totalRegistrations: 0,
     totalRevenue: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const api = "https://eventmanager-api.onrender.com";
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const token = Cookies.get("jwt_token");
-        const response = await axios.get(
-          "http://localhost:5000/api/admin/stats",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await axios.get(`${api}/api/admin/stats`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
-        );
+        });
 
         if (response.data.success) {
           setStats(response.data.data);
@@ -44,11 +45,12 @@ const Admin = () => {
 
   return (
     <div className="admin-container">
+      <AdminHeader />
       <h1 className="admin-title">Admin Dashboard</h1>
       <div className="stats-grid">
         <div className="stat-card">
-          <h2>Total Users</h2>
-          <p className="stat-value">{stats.totalUsers}</p>
+          <h2>Total Events</h2>
+          <p className="stat-value">{stats.totalEvents}</p>
         </div>
         <div className="stat-card">
           <h2>Total Registrations</h2>
