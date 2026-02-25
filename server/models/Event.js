@@ -7,7 +7,7 @@ const eventSchema = mongoose.Schema(
       required: true,
     },
     organizer: {
-      type: String, // Could be detailed object or reference to User
+      type: String,
       required: true,
     },
     date: {

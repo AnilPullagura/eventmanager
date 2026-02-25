@@ -6,6 +6,7 @@ import Login from "./components/login";
 import Home from "./components/Home";
 import History from "./components/History";
 import EventDetails from "./components/EventDetails";
+import Admin from "./components/Admin";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
@@ -27,6 +28,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
+            <Route path="/admin" element={<Admin />} />
             <Route path="/" element={<Home />} />
             <Route path="/history" element={<History />} />
             <Route path="/events/:id" element={<EventDetails />} />

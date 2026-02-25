@@ -105,6 +105,7 @@ Protects against brute-force attacks on the login endpoint.
 | **DELETE** | `/:id`          | **Admin**  | Delete an event.                    | 1. Removes event from DB.<br>2. Automatically pulls the event ID from all users' `registeredEvents` array to maintain data integrity.                                                                 |
 | **POST**   | `/:id/register` | **Yes**    | Register current user for an event. | 1. Checks if event exists & has seats.<br>2. Checks if user already registered.<br>3. Adds user to `event.attendees`.<br>4. Adds event to `user.registeredEvents`.<br>5. Decrements `availableSeats`. |
 | **POST**   | `/:id/cancel`   | **Yes**    | Cancel registration.                | 1. Checks if user is registered.<br>2. Removes user from `event.attendees`.<br>3. Removes event from `user.registeredEvents`.<br>4. Increments `availableSeats`.                                      |
+| **GET**    | `/admin/stats`  | **Admin**  | Get dashboard stats.                | Returns total events, total registrations, and total revenue using MongoDB aggregation.                                                                                                               |
 
 ---
 

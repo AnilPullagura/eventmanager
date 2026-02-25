@@ -19,7 +19,14 @@ const Login = () => {
 
   const setToken = (token) => {
     Cookies.set("jwt_token", token, { expires: 2 });
-    navigate("/", { replace: true });
+  };
+
+  const navigateToHome = (user) => {
+    if (user.role === "admin") {
+      return navigate("/admin", { replace: true });
+    } else {
+      return navigate("/", { replace: true });
+    }
   };
 
   const fetchLogin = async () => {
@@ -39,8 +46,10 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         Cookies.set("user", data.user.id, { expires: 2 });
+        console.log(data);
         loginUser(data.user.id);
         setToken(data.token);
+        navigateToHome(data.user);
       } else {
         const data = await response.json();
         setMSg(data.message);
