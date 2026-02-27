@@ -40,9 +40,6 @@ const Admin = () => {
     fetchStats();
   }, []);
 
-  if (loading) return <div className="admin-loading">Loading stats...</div>;
-  if (error) return <div className="admin-error">{error}</div>;
-
   return (
     <div className="admin-container">
       <AdminHeader />

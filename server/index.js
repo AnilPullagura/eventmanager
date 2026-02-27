@@ -11,7 +11,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
 connectDB();
 
 app.get("/", (req, res) => {
