@@ -1,8 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { MdEventNote, MdMenu } from "react-icons/md";
 import { MdLogout } from "react-icons/md";
@@ -48,6 +47,19 @@ const Header = () => {
     setOpen((prev) => !prev);
   };
 
+  const clearForm = () => {
+    setName("");
+    setCapacity("");
+    setDate("");
+    setDescription("");
+    setImageUrl("");
+    setLocation("");
+    setMsg("");
+    setCategory("");
+    setOrganizer("");
+    setPrice("");
+  };
+
   const createEvent = async (event) => {
     setStatus(apiConstants.loading);
     event.preventDefault();
@@ -79,7 +91,7 @@ const Header = () => {
         const data = await response.json();
         toast.success(data.message);
         setStatus(apiConstants.success);
-        close();
+        clearForm();
       } else {
         const data = await response.json();
         toast.error(data.message);
@@ -194,7 +206,13 @@ const Header = () => {
             <div className="form-box">
               <div className="form-top-box">
                 <p>Create New Event</p>
-                <button type="button" onClick={close}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearForm();
+                    close();
+                  }}
+                >
                   <IoMdClose className="close-icon" />
                 </button>
               </div>
@@ -301,7 +319,8 @@ const Header = () => {
                     type="button"
                     onClick={() => {
                       close();
-                      setMsg("");
+                      clearForm();
+                      window.location.reload();
                     }}
                   >
                     Cancel
@@ -334,7 +353,13 @@ const Header = () => {
             <div className="form-box">
               <div className="form-top-box">
                 <p>Create New Event</p>
-                <button type="button" onClick={close}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearForm();
+                    close();
+                  }}
+                >
                   <IoMdClose className="close-icon" />
                 </button>
               </div>
@@ -441,7 +466,8 @@ const Header = () => {
                     type="button"
                     onClick={() => {
                       close();
-                      setMsg("");
+                      clearForm();
+                      window.location.reload();
                     }}
                   >
                     Cancel
@@ -456,7 +482,6 @@ const Header = () => {
           <MdMenu />
         </button>
         {renderToggle()}
-        <ToastContainer position="bottom-center" autoClose={3000} />
       </div>
     </div>
   );
