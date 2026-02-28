@@ -1,82 +1,131 @@
-# Backend Documentation - Event Management App
+# 🎫 Event Pro — Full-Stack Event Management Platform
 
-This README provides a comprehensive overview of the backend structure, logic, and API endpoints for the Event Management application. It is designed to give you a complete understanding without needing to open every folder.
+A full-stack **MERN** (MongoDB, Express, React, Node.js) application that allows users to discover, register for, and manage events. Admins can create & delete events and monitor platform analytics through a dedicated dashboard.
 
-## 🛠 Tech Stack
+> **Live API**: `https://eventmanager-api.onrender.com`
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB (via Mongoose)
-- **Authentication**: JSON Web Tokens (JWT) & Bcrypt (for password hashing)
+---
+
+## ✨ Features
+
+### 👤 Users
+
+- **Register & Login** with email and password (JWT-based sessions stored via cookies)
+- **Browse events** with real-time search by name, location, or category
+- **Register / Cancel** for events with automatic seat tracking
+- **View registration history** of all events they've signed up for
+
+### 🔑 Admins
+
+- **Create new events** with details like price, capacity, image, category, etc.
+- **Delete events** (automatically cleans up all user registrations)
+- **Dashboard analytics** — view total events, total registrations, and revenue
+
+### 🛡️ Security
+
+- JWT authentication with 7-day token expiry
+- Password hashing with **bcrypt** (10 salt rounds)
+- Login **rate limiting** — max 10 attempts per IP every 10 minutes
+- Role-based access control (`user` / `admin`)
+- Protected routes on both frontend and backend
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer        | Technology                                                           |
+| :----------- | :------------------------------------------------------------------- |
+| **Frontend** | React 19, Vite 7, React Router 7, Axios, react-toastify, react-icons |
+| **Backend**  | Node.js, Express 4, Mongoose 7                                       |
+| **Database** | MongoDB (Atlas)                                                      |
+| **Auth**     | JSON Web Tokens (jsonwebtoken), bcrypt                               |
+| **Security** | express-rate-limit                                                   |
+| **State**    | React Context API, js-cookie                                         |
+
+---
 
 ## 📂 Project Structure
 
-- **`index.js`**: The entry point. Initializes the Express app, connects to the database, sets up middleware (CORS, JSON parsing), and defines the base API route `/api`.
-- **`config/db.js`**: Handles the connection to MongoDB.
-- **`models/`**: Mongoose schemas defining the data structure for Users and Events.
-- **`routes/`**: Defines the API endpoints and maps them to controller functions.
-- **`controllers/`**: Contains the business logic for each endpoint (handling requests, DB operations, responses).
-- **`middleware/`**:
-  - `authMiddleware.js`: Handles JWT verification (`protect`) and admin authorization (`admin`).
-  - `loginLimiter.js`: Implements rate limiting for the login endpoint to prevent brute-force attacks.
-- **`Utils/`**: Helper functions (e.g., generating JWT tokens).
+```
+event-management-app/
+├── client/                         # React frontend (Vite)
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Admin/              # Admin dashboard, event creation, event list
+│   │   │   ├── EventDetails/       # Individual event page (register/cancel)
+│   │   │   ├── Events/             # Event cards listing with search
+│   │   │   ├── Header/             # Navigation bar with logout
+│   │   │   ├── History/            # User's registered events history
+│   │   │   ├── Home/               # Landing page with search bar
+│   │   │   ├── ProtectedRoute/     # Auth guard (redirects to /login)
+│   │   │   └── login/              # Login & Register forms
+│   │   ├── context/                # React Context (user state)
+│   │   ├── App.jsx                 # Root component with routing
+│   │   └── main.jsx                # Vite entry point
+│   ├── index.html
+│   ├── vite.config.js
+│   └── package.json
+│
+├── server/                         # Express backend
+│   ├── config/
+│   │   └── db.js                   # MongoDB connection
+│   ├── controllers/
+│   │   ├── authController.js       # Register, Login, Fetch User
+│   │   ├── eventController.js      # CRUD + Registration/Cancellation
+│   │   └── adminController.js      # Dashboard statistics (aggregation)
+│   ├── middleware/
+│   │   ├── authMiddleware.js       # JWT verify (protect) & admin check
+│   │   └── loginLimiter.js         # Rate limiter for login route
+│   ├── models/
+│   │   ├── User.js                 # User schema
+│   │   └── Event.js                # Event schema
+│   ├── routes/
+│   │   ├── index.js                # Route aggregator
+│   │   ├── authRoutes.js           # /api/auth/*
+│   │   ├── eventRoutes.js          # /api/events/*
+│   │   └── adminRoutes.js          # /api/admin/*
+│   ├── Utils/
+│   │   └── jwtGenerator.js         # Token signing helper (7-day expiry)
+│   ├── seed.js                     # Database seeder with sample events
+│   ├── index.js                    # Entry point
+│   ├── .env                        # Environment variables
+│   └── package.json
+│
+└── README.md
+```
 
 ---
 
-## 🗄 Database Models
+## 🗄️ Database Models
 
-### 1. User (`User.js`)
+### User
 
-Represents a registered user of the platform.
+| Field              | Type       | Details                         |
+| :----------------- | :--------- | :------------------------------ |
+| `name`             | String     | Required                        |
+| `email`            | String     | Required, Unique                |
+| `password`         | String     | Hashed with bcrypt              |
+| `role`             | String     | `"user"` (default) or `"admin"` |
+| `registeredEvents` | ObjectId[] | References `Event` documents    |
+| `createdAt`        | Date       | Auto-generated (timestamps)     |
 
-- **`name`**: String (Required)
-- **`email`**: String (Required, Unique)
-- **`password`**: String (Hashed)
-- **`role`**: String ("user" or "admin", Default: "user") - Determines access levels.
-- **`registeredEvents`**: Array of ObjectIds (Ref: `Event`) - Tracks events the user has signed up for.
+### Event
 
-### 2. Event (`Event.js`)
-
-Represents an event created on the platform.
-
-- **`name`**: String (Required)
-- **`organizer`**: String (Required)
-- **`date`**: Date (Required)
-- **`location`**: String (Required)
-- **`description`**: String (Required)
-- **`capacity`**: Number (Total spots)
-- **`availableSeats`**: Number (Remaining spots)
-- **`category`**: String (e.g., Tech, Music)
-- **`attendees`**: Array of ObjectIds (Ref: `User`) - Tracks users registered for this event.
-
----
-
-### 1. Protection Middleware (`protect`)
-
-The backend uses **JWT (JSON Web Token)** for securing endpoints.
-
-- **File**: `middleware/authMiddleware.js`
-- **Logic**:
-  1. Checks for the `Authorization` header (`Bearer <token>`).
-  2. Verifies the token using `JWT_SECRET`.
-  3. Finds the user by ID and attaches it to `req.user`.
-
-### 2. Admin Authorization (`admin`)
-
-Ensures only users with the `admin` role can access specific routes.
-
-- **File**: `middleware/authMiddleware.js`
-- **Logic**: Checks `req.user.role`. If not `"admin"`, returns `401 Unauthorized`.
-
-### 3. Rate Limiting (`loginRateLimiter`)
-
-Protects against brute-force attacks on the login endpoint.
-
-- **File**: `middleware/loginLimiter.js`
-- **Configuration**:
-  - **Window**: 10 minutes.
-  - **Max Requests**: 10 per IP.
-  - **Response**: Returns 429 after limit is exceeded.
+| Field            | Type       | Details                         |
+| :--------------- | :--------- | :------------------------------ |
+| `name`           | String     | Required                        |
+| `organizer`      | String     | Required                        |
+| `date`           | Date       | Required                        |
+| `location`       | String     | Required                        |
+| `description`    | String     | Required                        |
+| `capacity`       | Number     | Total spots                     |
+| `availableSeats` | Number     | Remaining spots (auto-managed)  |
+| `category`       | String     | e.g. Tech, Music, Art           |
+| `imageUrl`       | String     | Event banner/image URL          |
+| `price`          | Number     | Ticket price                    |
+| `attendees`      | ObjectId[] | Users registered for this event |
+| `createdAt`      | Date       | Auto-generated (timestamps)     |
 
 ---
 
@@ -84,31 +133,159 @@ Protects against brute-force attacks on the login endpoint.
 
 **Base URL**: `/api`
 
-### 1. Authentication Routes (`/api/auth`)
+### Authentication — `/api/auth`
 
-| Method   | Endpoint    | Description                                         | Body Parameters             | Notes                        |
-| :------- | :---------- | :-------------------------------------------------- | :-------------------------- | :--------------------------- |
-| **POST** | `/register` | Register a new user. Hashes password before saving. | `{ name, email, password }` |                              |
-| **POST** | `/login`    | Authenticate user. Returns JWT and user info.       | `{ email, password }`       | **Rate Limited** (10req/10m) |
-| **POST** | `/user`     | Fetch user details by ID.                           | `{ userId }`                |                              |
+| Method | Endpoint    | Description                            | Body                        | Notes                       |
+| :----- | :---------- | :------------------------------------- | :-------------------------- | :-------------------------- |
+| `POST` | `/register` | Create a new user account              | `{ name, email, password }` | Hashes password before save |
+| `POST` | `/login`    | Authenticate & receive JWT + user info | `{ email, password }`       | **Rate limited** (10/10min) |
+| `POST` | `/user`     | Fetch user details (excludes password) | `{ userId }`                |                             |
 
-### 2. Event Routes (`/api/events`)
+### Events — `/api/events`
 
-| Method     | Endpoint        | Protected? | Description                         | Logic / Notes                                                                                                                                                                                         |
-| :--------- | :-------------- | :--------- | :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **GET**    | `/`             | No         | Get all events.                     | **Search**: Supports `?search=query` to filter by name, location, or category (case-insensitive regex).                                                                                               |
-| **GET**    | `/:id`          | **Yes**    | Get event details by ID.            | Returns 404 if event not found.                                                                                                                                                                       |
-| **POST**   | `/`             | **Admin**  | Create a new event.                 | Only accessible to users with `admin` role. Sets `availableSeats` equal to `capacity`.                                                                                                                |
-| **DELETE** | `/:id`          | **Admin**  | Delete an event.                    | 1. Removes event from DB.<br>2. Automatically pulls the event ID from all users' `registeredEvents` array to maintain data integrity.                                                                 |
-| **POST**   | `/:id/register` | **Yes**    | Register current user for an event. | 1. Checks if event exists & has seats.<br>2. Checks if user already registered.<br>3. Adds user to `event.attendees`.<br>4. Adds event to `user.registeredEvents`.<br>5. Decrements `availableSeats`. |
-| **POST**   | `/:id/cancel`   | **Yes**    | Cancel registration.                | 1. Checks if user is registered.<br>2. Removes user from `event.attendees`.<br>3. Removes event from `user.registeredEvents`.<br>4. Increments `availableSeats`.                                      |
+| Method   | Endpoint        | Auth       | Description                          | Notes                                                                   |
+| :------- | :-------------- | :--------- | :----------------------------------- | :---------------------------------------------------------------------- |
+| `GET`    | `/`             | Public     | List all events                      | Supports `?search=query` (searches name, location, category)            |
+| `GET`    | `/:id`          | Protected  | Get single event by ID               | Returns 404 if not found                                                |
+| `POST`   | `/`             | Admin only | Create a new event                   | Sets `availableSeats = capacity`                                        |
+| `DELETE` | `/:id`          | Admin only | Delete an event                      | Also removes event from all users' `registeredEvents`                   |
+| `POST`   | `/:id/register` | Protected  | Register for an event                | Atomic update — checks seats & duplicate registration in a single query |
+| `POST`   | `/:id/cancel`   | Protected  | Cancel event registration            | Increments `availableSeats`, removes user from `attendees`              |
+| `GET`    | `/history`      | Protected  | Get current user's registered events | Populates full event details                                            |
+
+### Admin — `/api/admin`
+
+| Method | Endpoint | Auth       | Description                                                 |
+| :----- | :------- | :--------- | :---------------------------------------------------------- |
+| `GET`  | `/stats` | Admin only | Dashboard stats: total events, total registrations, revenue |
+
+> Revenue is calculated via MongoDB aggregation: `attendees count × event price` per event, summed across all events.
 
 ---
 
-## ⚙️ Environment Variables (.env)
+## 🔒 Middleware
 
-Ensure these are set in your `.env` file:
+| Middleware         | File                        | Purpose                                                            |
+| :----------------- | :-------------------------- | :----------------------------------------------------------------- |
+| `protect`          | `middleware/authMiddleware` | Verifies `Bearer <token>` in `Authorization` header, attaches user |
+| `admin`            | `middleware/authMiddleware` | Checks `req.user.role === "admin"`, returns 401 otherwise          |
+| `loginRateLimiter` | `middleware/loginLimiter`   | 10 requests / 10 minutes per IP on login; returns 429 on excess    |
 
-- `PORT`: Server port (default matches code, usually 5000)
-- `MONGO_URI`: MongoDB connection string
-- `JWT_SECRET`: Secret key for signing tokens
+---
+
+## 🖥️ Frontend Pages
+
+| Route         | Component      | Description                                                |
+| :------------ | :------------- | :--------------------------------------------------------- |
+| `/login`      | `Login`        | Login & Register forms with toggle; redirects if logged in |
+| `/`           | `Home`         | Hero section + search bar + event cards listing            |
+| `/events/:id` | `EventDetails` | Full event info with register/cancel actions               |
+| `/history`    | `History`      | List of events the user has registered for                 |
+| `/admin`      | `Admin`        | Dashboard stats + create event form + manage events list   |
+
+All routes except `/login` are wrapped in a `ProtectedRoute` component that redirects unauthenticated users to `/login`. Admin users are redirected to `/admin` upon login.
+
+---
+
+## ⚡ Getting Started
+
+### Prerequisites
+
+- **Node.js** ≥ 18
+- **MongoDB** (local or [MongoDB Atlas](https://www.mongodb.com/atlas))
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repo-url>
+cd event-management-app
+```
+
+### 2. Setup the Backend
+
+```bash
+cd server
+npm install
+```
+
+Create a `.env` file in the `server/` directory:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
+
+Seed the database with sample events (optional):
+
+```bash
+npm run seed
+```
+
+Start the server:
+
+```bash
+# Development (with hot reload)
+npm run dev
+
+# Production
+npm start
+```
+
+### 3. Setup the Frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+> The frontend dev server runs on `http://localhost:5173` by default (Vite).
+> The backend API runs on `http://localhost:5000`.
+
+---
+
+## ⚙️ Environment Variables
+
+| Variable     | Description                       | Example                              |
+| :----------- | :-------------------------------- | :----------------------------------- |
+| `PORT`       | Server port                       | `5000`                               |
+| `MONGO_URI`  | MongoDB connection string         | `mongodb+srv://user:pass@cluster/db` |
+| `JWT_SECRET` | Secret key for signing JWT tokens | `my_super_secret_key`                |
+
+---
+
+## 📜 Available Scripts
+
+### Server (`/server`)
+
+| Script         | Command            | Description                    |
+| :------------- | :----------------- | :----------------------------- |
+| `npm start`    | `node index.js`    | Start production server        |
+| `npm run dev`  | `nodemon index.js` | Start with auto-restart        |
+| `npm run seed` | `node seed.js`     | Seed database with sample data |
+
+### Client (`/client`)
+
+| Script            | Command        | Description              |
+| :---------------- | :------------- | :----------------------- |
+| `npm run dev`     | `vite`         | Start dev server         |
+| `npm run build`   | `vite build`   | Build for production     |
+| `npm run preview` | `vite preview` | Preview production build |
+| `npm run lint`    | `eslint .`     | Run ESLint               |
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
