@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import History from "./components/History";
 import EventDetails from "./components/EventDetails";
 import Admin from "./components/Admin";
+import NotFound from "./components/NotFound";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
@@ -33,6 +34,7 @@ const App = () => {
             <Route path="/history" element={<History />} />
             <Route path="/events/:id" element={<EventDetails />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </EventContext.Provider>
