@@ -2,25 +2,26 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { TailSpin } from "react-loader-spinner";
 import Header from "../Header";
-import HistoryItem from "./historyItem.jsx";
+import HistoryItem from "./historyItem";
 import { BsTicketPerforatedFill } from "react-icons/bs";
+import { Event, ApiStatus } from "../../types";
 
 import "./index.css";
 
 const apiConstants = {
-  initial: "INITIAL",
-  success: "SUCCESS",
-  loading: "LOADING",
-  failure: "FAILURE",
+  loading: "LOADING" as const,
+  success: "SUCCESS" as const,
+  failure: "FAILURE" as const,
+  initial: "INITIAL" as const,
 };
 
 const History = () => {
-  const [apistatus, setStatus] = useState(apiConstants.initial);
-  const [historyEvents, setHistory] = useState([]);
+  const [apistatus, setStatus] = useState<ApiStatus>(apiConstants.initial);
+  const [historyEvents, setHistory] = useState<Event[]>([]);
   const api = "https://eventmanager-api.onrender.com";
   const token = Cookies.get("jwt_token");
 
-  const getHistoryEvents = async () => {
+  const getHistoryEvents = async (): Promise<void> => {
     setStatus(apiConstants.loading);
     const url = `${api}/api/events/history`;
     const options = {
@@ -33,8 +34,7 @@ const History = () => {
     try {
       const response = await fetch(url, options);
       if (response.ok) {
-        const data = await response.json();
-
+        const data: { history_events: Event[] } = await response.json();
         setHistory(data.history_events);
         setStatus(apiConstants.success);
       } else {
@@ -72,7 +72,7 @@ const History = () => {
       </p>
       {historyEvents.length > 0 ? (
         <ul className="events-history">
-          {historyEvents.map((event) => (
+          {historyEvents.map((event: Event) => (
             <HistoryItem key={event._id} details={event} />
           ))}
         </ul>

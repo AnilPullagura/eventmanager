@@ -5,6 +5,8 @@ import { MdEventNote, MdMenu } from "react-icons/md";
 import { MdLogout } from "react-icons/md";
 import EventContext from "../../context";
 
+import { User } from "../../types";
+
 import "./index.css";
 
 const Header = () => {
@@ -13,7 +15,14 @@ const Header = () => {
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const { user } = useContext(EventContext);
-  const [userdata, setData] = useState({});
+  const [userdata, setData] = useState<User>({
+    id: "",
+    name: "",
+    email: "",
+    role: "",
+    registeredEvents: [],
+  });
+
   const username = userdata ? userdata.name : "U";
 
   const api = "https://eventmanager-api.onrender.com";
@@ -24,7 +33,7 @@ const Header = () => {
     navigate("/login", { replace: true });
   };
 
-  const fetchuserDetails = async () => {
+  const fetchuserDetails = async (): Promise<void> => {
     const url = `${api}/api/auth/user`;
     const options = {
       method: "POST",
@@ -36,7 +45,7 @@ const Header = () => {
 
     const response = await fetch(url, options);
     if (response.ok) {
-      const data = await response.json();
+      const data: { user_details: User } = await response.json();
       setData(data.user_details);
     }
   };

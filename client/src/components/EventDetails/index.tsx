@@ -6,27 +6,49 @@ import { CiLocationOn, CiCalendar } from "react-icons/ci";
 import { CgOrganisation } from "react-icons/cg";
 
 import Header from "../Header";
+import { Event, ApiStatus } from "../../types";
 
 import "./index.css";
 
 const apiConstants = {
-  initial: "INITIAL",
-  success: "SUCCESS",
-  loading: "LOADING",
-  failure: "FAILURE",
+  initial: "INITIAL" as const,
+  success: "SUCCESS" as const,
+  loading: "LOADING" as const,
+  failure: "FAILURE" as const,
 };
 
+interface ResponseProp {
+  details: Event;
+}
+
+interface RegisterProp {
+  message: string;
+}
+
 const EventDetails = () => {
-  const [apistatus, setStatus] = useState(apiConstants.initial);
-  const [btnstatus, setbtnStatus] = useState(apiConstants.initial);
+  const [apistatus, setStatus] = useState<ApiStatus>(apiConstants.initial);
+  const [btnstatus, setbtnStatus] = useState<ApiStatus>(apiConstants.initial);
   const [result, setResult] = useState("");
-  const [eventDetails, setDetails] = useState({});
+  const [eventDetails, setDetails] = useState<Event>({
+    _id: "",
+    name: "",
+    description: "",
+    location: "",
+    date: "",
+    availableSeats: 0,
+    capacity: 0,
+    organizer: "",
+    category: "",
+    imageUrl: "",
+    price: 0,
+    attendees: [],
+  });
   const { id } = useParams();
 
   const api = "https://eventmanager-api.onrender.com";
   const token = Cookies.get("jwt_token");
 
-  const getEventsDetails = async () => {
+  const getEventsDetails = async (): Promise<void> => {
     setStatus(apiConstants.loading);
     const url = `${api}/api/events/${id}`;
     const options = {
@@ -39,7 +61,7 @@ const EventDetails = () => {
     try {
       const response = await fetch(url, options);
       if (response.ok) {
-        const data = await response.json();
+        const data: ResponseProp = await response.json();
         setDetails(data.details);
         setStatus(apiConstants.success);
       } else {
@@ -60,7 +82,7 @@ const EventDetails = () => {
     </div>
   );
 
-  const register = async () => {
+  const register = async (): Promise<void> => {
     setbtnStatus(apiConstants.loading);
     const url = `${api}/api/events/${id}/register`;
     const options = {
@@ -73,12 +95,12 @@ const EventDetails = () => {
     try {
       const response = await fetch(url, options);
       if (response.ok) {
-        const data = await response.json();
+        const data: RegisterProp = await response.json();
         setResult(data.message);
         setbtnStatus(apiConstants.success);
         getEventsDetails();
       } else {
-        const data = await response.json();
+        const data: RegisterProp = await response.json();
         setResult(data.message);
         setbtnStatus(apiConstants.success);
         getEventsDetails();
@@ -243,7 +265,6 @@ const EventDetails = () => {
     }
   };
 
-  console.log(result);
   return (
     <div className="event-details-bg-container">
       <Header />

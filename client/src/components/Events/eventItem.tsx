@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 import { CiLocationOn } from "react-icons/ci";
+import { Event } from "../../types";
+
 import "./index.css";
 
-const EventItem = (props) => {
-  const { details } = props;
+interface EventItemProp {
+  details: Event;
+}
+
+const EventItem = ({ details }: EventItemProp) => {
   const { _id, name, location, date, imageUrl, price, category } = details;
 
   return (

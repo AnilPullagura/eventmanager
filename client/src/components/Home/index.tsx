@@ -1,11 +1,11 @@
 import { useState } from "react";
-import Header from "../Header";
-import Events from "../Events";
+import Header from "../Header/index.tsx";
+import Events from "../Events/index.tsx";
 
 import "./index.css";
 
 const Home = () => {
-  const [searchTag, setTag] = useState("");
+  const [searchTag, setTag] = useState<string>("");
   return (
     <div className="home-container">
       <Header />
@@ -20,7 +20,9 @@ const Home = () => {
             className="search-bar"
             type="search"
             value={searchTag}
-            onChange={(e) => setTag(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setTag(e.target.value)
+            }
             placeholder="Seacrh Here..."
           />
         </div>

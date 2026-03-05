@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import React from "react";
 import "./index.css";
 
-const NotFound = () => (
+const NotFound: React.FC = () => (
   <div className="not-found-container">
     <div className="not-found-content">
       <h1 className="not-found-title">404</h1>

@@ -2,42 +2,44 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { TailSpin } from "react-loader-spinner";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { FiUserPlus } from "react-icons/fi";
 import { FaRegCalendar, FaSackDollar } from "react-icons/fa6";
-import EventItem from "./eventItem.jsx";
+import EventItem from "./eventItem";
+import { Event, Stats, EventsResponse, ApiStatus } from "../../types";
 
 import "react-toastify/dist/ReactToastify.css";
-import AdminHeader from "./adminHeader.jsx";
+import AdminHeader from "./adminHeader";
 
 import "./index.css";
 
 const apiConstants = {
-  loading: "LOADING",
-  success: "SUCCESS",
-  failure: "FAILURE",
-  initial: "INITIAL",
+  loading: "LOADING" as const,
+  success: "SUCCESS" as const,
+  failure: "FAILURE" as const,
+  initial: "INITIAL" as const,
 };
 
 const Admin = () => {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<Stats>({
     totalEvents: 0,
     totalRegistrations: 0,
     totalRevenue: 0,
   });
-  const [events, setEvents] = useState([]);
-  const [apiStatus, setStatus] = useState(apiConstants.initial);
-  const [searchq, setSearch] = useState("");
+  const [events, setEvents] = useState<Event[]>([]);
+  const [apiStatus, setStatus] = useState<ApiStatus>(apiConstants.initial);
+  const [searchq, setSearch] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
 
   const api = "https://eventmanager-api.onrender.com";
 
-  const getEvents = async () => {
+  const getEvents = async (): Promise<void> => {
     setStatus(apiConstants.loading);
     try {
       const url = `${api}/api/events/?search=${searchq}`;
       const response = await fetch(url);
       if (response.ok) {
-        const data = await response.json();
+        const data: EventsResponse = await response.json();
         setEvents(data.data);
         setStatus(apiConstants.success);
       } else {
@@ -61,7 +63,7 @@ const Admin = () => {
         if (response.data.success) {
           setStats(response.data.data);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error fetching admin stats:", err);
         setError("Failed to load dashboard statistics.");
       }
@@ -136,7 +138,7 @@ const Admin = () => {
             </span>
             <input
               placeholder="Search Events,Registrations"
-              onChange={(e) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setSearch(e.target.value);
                 setTimeout(() => {
                   getEvents();

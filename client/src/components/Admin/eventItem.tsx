@@ -1,19 +1,27 @@
 import { MdDeleteForever } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
-
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Event } from "../../types";
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 
-const EventItem = (props) => {
-  const { details } = props;
+interface EventItemProps {
+  details: Event;
+}
+
+interface Response {
+  message: string;
+}
+
+const EventItem = ({ details }: EventItemProps) => {
   const { _id, name, location, date, availableSeats, capacity, imageUrl } =
     details;
   const api = "https://eventmanager-api.onrender.com";
 
-  const deleteEvent = async () => {
+  const deleteEvent = async (): Promise<void> => {
     const url = `${api}/api/events/${_id}`;
-    const token = Cookies.get("jwt_token");
+    const token: string | undefined = Cookies.get("jwt_token");
     const options = {
       method: "DELETE",
       headers: {
@@ -24,18 +32,22 @@ const EventItem = (props) => {
     try {
       const response = await fetch(url, options);
       if (response.ok) {
-        const data = await response.json();
+        const data: Response = await response.json();
         toast.success(data.message);
         setTimeout(() => {
           window.location.reload();
         }, 2000);
       } else {
-        const data = await response.json();
+        const data: Response = await response.json();
 
         toast.error(data.message);
       }
     } catch (er) {
-      toast.error(er);
+      if (er instanceof Error) {
+        toast.error(er.message);
+      } else {
+        toast.error("An unknown error occurred");
+      }
     }
   };
   return (

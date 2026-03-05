@@ -1,27 +1,31 @@
 import { useNavigate, Navigate } from "react-router-dom";
+
+import Cookies from "js-cookie";
+
+import "react-toastify/dist/ReactToastify.css";
+import { User, LoginResponse } from "../../types";
 import { useState, useContext } from "react";
 import EventContext from "../../context";
 
-import Cookies from "js-cookie";
 import "./index.css";
 
 const Login = () => {
-  const [isregister, setStatus] = useState(true);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPass] = useState("");
-  const [errMsg, setMSg] = useState("");
+  const [isregister, setStatus] = useState<boolean>(true);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPass] = useState<string>("");
+  const [errMsg, setMSg] = useState<string>("");
   const navigate = useNavigate();
 
   const { loginUser } = useContext(EventContext);
 
   const api = "https://eventmanager-api.onrender.com";
 
-  const setToken = (token) => {
+  const setToken = (token: string): void => {
     Cookies.set("jwt_token", token, { expires: 2 });
   };
 
-  const navigateToHome = (user) => {
+  const navigateToHome = (user: User) => {
     if (user.role === "admin") {
       return navigate("/admin", { replace: true });
     } else {
@@ -29,7 +33,7 @@ const Login = () => {
     }
   };
 
-  const fetchLogin = async () => {
+  const fetchLogin = async (): Promise<void> => {
     const url = `${api}/api/auth/login`;
     const options = {
       method: "POST",
@@ -44,11 +48,10 @@ const Login = () => {
     try {
       const response = await fetch(url, options);
       if (response.ok) {
-        const data = await response.json();
+        const data: LoginResponse = await response.json();
         Cookies.set("user", data.user.id, { expires: 2 });
-        console.log(data);
         loginUser(data.user.id);
-        setToken(data.token);
+        if (data.token) setToken(data.token);
         navigateToHome(data.user);
       } else {
         const data = await response.json();
@@ -59,7 +62,7 @@ const Login = () => {
     }
   };
 
-  const getloginApicall = (e) => {
+  const getloginApicall = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     fetchLogin();
   };
@@ -119,7 +122,7 @@ const Login = () => {
     );
   };
 
-  const getApicall = (e) => {
+  const getApicall = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     fetchRegister();
   };

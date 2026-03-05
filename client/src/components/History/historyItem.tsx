@@ -1,26 +1,31 @@
 import Cookies from "js-cookie";
-
 import "./index.css";
 import { CiCalendar, CiLocationOn } from "react-icons/ci";
 import { MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 import { TailSpin } from "react-loader-spinner";
+import { Link } from "react-router-dom";
+import { Event } from "../../types";
 
+type ApiProp = "INITIAL" | "SUCCESS" | "LOADING" | "FAILURE";
 const apiConstants = {
-  initial: "INITIAL",
-  success: "SUCCESS",
-  loading: "LOADING",
-  failure: "FAILURE",
+  initial: "INITIAL" as const,
+  success: "SUCCESS" as const,
+  loading: "LOADING" as const,
+  failure: "FAILURE" as const,
 };
 
-const HistoryItem = (props) => {
-  const [apistatus, setStatus] = useState(apiConstants.initial);
-  const { details } = props;
+interface ItemProp {
+  details: Event;
+}
+
+const HistoryItem = ({ details }: ItemProp) => {
+  const [apistatus, setStatus] = useState<ApiProp>(apiConstants.initial);
   const token = Cookies.get("jwt_token");
   const { location, name, _id, imageUrl, date } = details;
   const api = "https://eventmanager-api.onrender.com";
 
-  const cancel = async () => {
+  const cancel = async (): Promise<void> => {
     setStatus(apiConstants.loading);
     const url = `${api}/api/events/${_id}/cancel`;
     const options = {

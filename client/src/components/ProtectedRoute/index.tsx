@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Cookies from "js-cookie";
+import React from "react";
 
-const ProtectedRoute = () => {
+const ProtectedRoute: React.FC = () => {
   const token = Cookies.get("jwt_token");
 
   if (token === undefined) {

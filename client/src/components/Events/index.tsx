@@ -1,25 +1,30 @@
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { TailSpin } from "react-loader-spinner";
-import EventItem from "./eventItem.jsx";
+import EventItem from "./eventItem.tsx";
+import { Event, ApiStatus, EventsResponse } from "../../types";
+
 import "./index.css";
 
 const apiConstants = {
-  intial: "INITIAL",
-  success: "SUCCESS",
-  loading: "LOADING",
-  failure: "FAILURE",
+  intial: "INITIAL" as const,
+  success: "SUCCESS" as const,
+  loading: "LOADING" as const,
+  failure: "FAILURE" as const,
 };
 
-const Events = (props) => {
-  const { searchTag } = props;
-  const [events, setEvents] = useState([]);
-  const [apistatus, setStatus] = useState(apiConstants.intial);
+interface SearchProp {
+  searchTag: string;
+}
+
+const Events = ({ searchTag }: SearchProp) => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [apistatus, setStatus] = useState<ApiStatus>(apiConstants.intial);
 
   const api = "https://eventmanager-api.onrender.com";
   const token = Cookies.get("jwt_token");
 
-  const fetchEvents = async () => {
+  const fetchEvents = async (): Promise<void> => {
     setStatus(apiConstants.loading);
     const url = `${api}/api/events/?search=${searchTag}`;
     const options = {
@@ -32,9 +37,8 @@ const Events = (props) => {
     try {
       const response = await fetch(url, options);
       if (response.ok) {
-        const data = await response.json();
-
-        setEvents(data);
+        const data: EventsResponse = await response.json();
+        setEvents(data.data);
         setStatus(apiConstants.success);
       } else {
         setStatus(apiConstants.failure);
@@ -79,13 +83,12 @@ const Events = (props) => {
   };
 
   const renderEvents = () => {
-    const eventData = events.data;
-
+    const eventData = events;
     return (
       <div className="events">
         <h1 className="event-heading">All Events</h1>
         <ul className="events-list">
-          {eventData.map((event) => (
+          {eventData.map((event: Event) => (
             <EventItem key={event._id} details={event} />
           ))}
         </ul>
