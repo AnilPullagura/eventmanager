@@ -167,7 +167,7 @@ const Login = () => {
     <div className="login-box">
       <div className="login-container">
         <h1>
-          Welcome To <span>Event Pro</span>
+          Welcome To <span>Evently</span>
         </h1>
       </div>
       <div className="login-form">
