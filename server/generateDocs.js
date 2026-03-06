@@ -33,16 +33,18 @@ const extractDocs = () => {
       controllerContent = fs.readFileSync(controllerPath, "utf8");
     }
 
-    // Patterns to match router.post('/path', middleware, controllerMethod)
+    // Patterns to match router.post('/path', middleware1, middleware2, controllerMethod)
     const routeRegex =
-      /router\.(get|post|put|delete)\(\s*["']([^"']+)["']\s*,\s*(?:([^,]+),)?\s*([^)]+)\)/g;
+      /router\.(get|post|put|delete)\(\s*["']([^"']+)["']\s*,\s*([\s\S]*?)\)/g;
     let match;
 
     while ((match = routeRegex.exec(routeContent)) !== null) {
       const method = match[1].toUpperCase();
       const endpoint = `/api/${routeName.toLowerCase()}${match[2]}`;
-      const middleware = match[3] ? match[3].trim() : "";
-      const controllerMethod = match[4].trim();
+      const handlerStr = match[3];
+      const handlers = handlerStr.split(",").map((s) => s.trim());
+      const controllerMethod = handlers.pop();
+      const middleware = handlers.join(", ");
 
       let parameters = "N/A";
       let authRequired =
@@ -51,7 +53,7 @@ const extractDocs = () => {
           : "❌ No";
 
       if (controllerContent) {
-        // Try to find the function in the controller and extract req.body/params
+        // Find the function and extract req.body/params/query keys
         const funcRegex = new RegExp(
           `exports\\.${controllerMethod}\\s*=\\s*async\\s*\\(req,\\s*res\\)\\s*=>\\s*{([\\s\\S]*?)^};`,
           "m",
@@ -59,12 +61,24 @@ const extractDocs = () => {
         const funcMatch = funcRegex.exec(controllerContent);
 
         if (funcMatch) {
-          const bodyMatch =
-            /const\\s*{\\s*([^}]+)\\s*}\\s*=\\s*req\\.(body|params|query)/.exec(
-              funcMatch[1],
+          const params = [];
+          // Match destructuring: const { a, b } = req.query/body/params
+          const destructuringRegex =
+            /const\s*{\s*([^}]+)\s*}\s*=\s*req\.(body|params|query)/g;
+          let pMatch;
+          while ((pMatch = destructuringRegex.exec(funcMatch[1])) !== null) {
+            params.push(
+              ...pMatch[1].split(",").map((s) => s.trim().split(":")[0].trim()),
             );
-          if (bodyMatch) {
-            parameters = `\`${bodyMatch[1].trim()}\``;
+          }
+          // Match direct access: req.query.page
+          const directAccessRegex = /req\.(body|params|query)\.([\w]+)/g;
+          while ((pMatch = directAccessRegex.exec(funcMatch[1])) !== null) {
+            params.push(pMatch[2]);
+          }
+
+          if (params.length > 0) {
+            parameters = `\`${[...new Set(params)].join(", ")}\``;
           }
         }
       }

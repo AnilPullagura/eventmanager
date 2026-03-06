@@ -66,6 +66,7 @@ event-management-app/
 ### 👤 For Participants (Users)
 
 - **Event Discovery**: Real-time search and filter capabilities.
+- **Smart Pagination**: Optimized event loading (Skip/Limit) to handle large datasets (e.g., 150+ events) with ease.
 - **Seamless Registration**: Atomic booking logic with real-time capacity updates.
 - **Profile & History**: View registered events and manage attendance history.
 - **Secure Access**: JWT-protected routes and persistent login state.
