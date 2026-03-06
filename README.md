@@ -1,11 +1,12 @@
-# 🎫 Event Pro — Enterprise-Grade Event Management Platform
+# 🎫 Evently — Enterprise-Grade Event Management Platform
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)](https://react.dev/)
 [![Node.js](https://img.shields.io/badge/Node.js-20-339933?style=for-the-badge&logo=nodedotjs)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
+[![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
-**Evently** is a robust, full-stack event management ecosystem designed for high performance and scalability. This project recently underwent a major architectural evolution, migrating from a standard JavaScript MERN stack to a **Strictly Typed TypeScript Architecture** for enhanced maintainability and developer productivity.
+**Evently** (formerly Evently) is a robust, full-stack event management ecosystem built for high performance, scalability, and type safety. It features a modern React frontend and a secure Node.js backend, seamlessly integrated with a strictly typed TypeScript architecture.
 
 > **Live API**: [https://eventmanager-api.onrender.com](https://eventmanager-api.onrender.com)
 
@@ -15,136 +16,112 @@
 
 ### 🛡️ Backend (Node.js & Express)
 
-A secure, RESTful API layer built with a modular controller-route-model architecture.
+A secure RESTful API layer utilizing a modular Controller-Route-Model (CRM) architecture.
 
-- **Database**: MongoDB (Atlas) for non-relational, flexible data storage.
-- **Authentication**: Stateless JWT implementation with automatic session termination.
+- **Database**: MongoDB (Atlas) with Mongoose ODM.
+- **Authentication**: JWT-based stateless authentication.
 - **Security**:
-  - **Bcrypt**: Industrial-grade password hashing.
-  - **Rate Limiting**: Integrated protection against brute-force attacks on sensitive endpoints.
-  - **Role-Based Access Control (RBAC)**: Distinct permissions for `Admin` and `User` roles.
+  - Password hashing with Bcrypt.
+  - API rate limiting via `express-rate-limit`.
+  - Role-Based Access Control (RBAC) specifically tailored for `Admin` and `User` roles.
+- **Documentation**: Automated API documentation generation using `generateDocs.js`.
 
 ### ⚛️ Frontend (React & TypeScript)
 
-A modern, high-performance UI built with Vite and strictly typed components.
+A high-performance SPA built with Vite and modern React hooks.
 
-- **Migration Journey**: Successfully refactored from `.jsx` to `.tsx`, implementing a project-wide type safety layer.
-- **State Management**: React Context API utilized for global user state and authentication tracking.
-- **Performance**: Debounced search mechanisms and optimized re-renders using modern React hooks.
-
----
-
-## 📘 The TypeScript Documentary
-
-The most significant upgrade to this platform is the transition to a **Centralized Type System**. This migration eliminated "any" types and replaced runtime guesswork with compile-time certainty.
-
-### 🎯 Centralized Type Library (`src/types.ts`)
-
-Instead of fragmented interfaces, the project uses a single source of truth for all domain models:
-
-- **Unified Domain Models**: `Event`, `User`, and `Stats` are strictly defined and shared across all components.
-- **API Response Wrappers**: Standardized wrappers like `EventsResponse` and `LoginResponse` ensure that frontend extraction logic never assumes the data shape—it _knows_ it.
-- **UI State Safety**: `ApiStatus` (Initial, Loading, Success, Failure) is exported as a unified type, ensuring consistent loading states across Admin, Home, and History pages.
-
-```typescript
-// Example of the centralized architecture
-export interface Event {
-  _id: string;
-  name: string;
-  organizer: string;
-  // ... strictly typed properties
-}
-
-export interface LoginResponse {
-  user: User;
-  token?: string;
-}
-```
+- **State Management**: React Context API for authentication and global user state.
+- **Routing**: Client-side routing with `react-router-dom` (v7).
+- **UI/UX**: Responsive design with `react-toastify` for notifications and `react-icons` for a polished look.
+- **Type Safety**: 100% TypeScript coverage with a centralized type system.
 
 ---
 
-## ✨ Features Pin-to-Pin
-
-### 👤 For the User
-
-- **Dynamic Discovery**: Real-time search engine for finding events by name, location, or tag.
-- **Seat Orchestration**: Atomic registration logic—users can't book full events, and cancellations immediately restore capacity.
-- **Registration Vault**: Personal history tab to view all past and upcoming event participations.
-
-### 🔑 For the Admin
-
-- **Control Center**: Advanced dashboard for monitoring total revenue, user engagement, and platform growth.
-- **Event Lifecycle**: Full CRUD capabilities—instantly create, modify, or delete events across the entire ecosystem.
-- **Analytics Engine**: Real-time aggregation of attendance and revenue data via MongoDB `$group` and `$sum` operators.
-
----
-
-## 📂 Project Blueprint
+## 📂 Project Structure
 
 ```text
 event-management-app/
-├── client/                     # TypeScript Frontend
+├── client/                     # React + Vite + TypeScript
 │   ├── src/
-│   │   ├── types.ts            # ⬅️ Centralized Type System
-│   │   ├── components/         # Atomic TSX Components
-│   │   ├── context/            # Typed Global Registry
-│   │   └── App.tsx             # Root Orchestrator
-├── server/                     # Node.js Backend
-│   ├── controllers/            # Business Logic
-│   ├── middleware/             # Security & Auth Guards
-│   ├── models/                 # Database Schemas
-│   └── routes/                 # API Endpoint Definitions
+│   │   ├── components/         # Modular UI components (Admin, Events, Auth, etc.)
+│   │   ├── context/            # React Context (AuthContext)
+│   │   ├── types.ts            # Centralized TypeScript definitions
+│   │   ├── App.tsx             # Main routing and layout
+│   │   └── main.tsx            # Application entry point
+├── server/                     # Node.js + Express + MongoDB
+│   ├── config/                 # Database configuration
+│   ├── controllers/            # Business logic handlers
+│   ├── middleware/             # Auth guards and rate limiters
+│   ├── models/                 # Mongoose schemas
+│   ├── routes/                 # API endpoint definitions
+│   ├── seed.js                 # Database seeding script (Faker.js)
+│   ├── generateDocs.js         # API documentation generator
+│   └── index.js                # Server entry point
 ```
+
+---
+
+## 🚀 Key Features
+
+### 👤 For Participants (Users)
+
+- **Event Discovery**: Real-time search and filter capabilities.
+- **Seamless Registration**: Atomic booking logic with real-time capacity updates.
+- **Profile & History**: View registered events and manage attendance history.
+- **Secure Access**: JWT-protected routes and persistent login state.
+
+### 🔑 For Organizers (Admins)
+
+- **Analytics Dashboard**: Real-time stats for total revenue and user registrations.
+- **Event Management**: Full CRUD operations for creating and updating events.
+- **Data Integrity**: Automated seeding for testing scenarios using `npm run seed`.
+- **System Monitoring**: Access to automated API specifications at `server/API_SPEC.md`.
 
 ---
 
 ## 🛠️ Installation & Setup
 
-### Prerequisites
+### 1. Prerequisites
 
-- Node.js ≥ 18
-- MongoDB Connection String
+- Node.js (v18+)
+- MongoDB Atlas account or local MongoDB instance.
 
-### 1. Clone & Install
+### 2. Clone the Repository
 
 ```bash
 git clone https://github.com/AnilPullagura/eventmanager.git
-npm run install-all # Custom script to install client & server
+cd event-management-app
 ```
 
-### 2. Environment Configuration
-
-Create a `.env` in the `server` folder:
-
-```text
-PORT=5000
-MONGO_URI=your_mongodb_uri
-JWT_SECRET=your_secure_secret
-```
-
-### 3. Run Development
+### 3. Server Setup
 
 ```bash
-# Backend
-cd server && npm run dev
+cd server
+npm install
+# Create .env file with: PORT, MONGO_URI, JWT_SECRET
+npm run seed  # Optional: Seed the database with sample data
+npm run dev   # Start development server
+```
 
-# Frontend
-cd client && npm run dev
+### 4. Client Setup
+
+```bash
+cd ../client
+npm install
+npm run dev   # Start Vite development server
 ```
 
 ---
 
-## 📜 Development Milestone
+## 📜 Development Scripts
 
-- [x] **Phase 1**: Initial MERN Implementation
-- [x] **Phase 2**: JWT Security & Rate Limiting Integration
-- [x] **Phase 3**: Full TypeScript Migration (Strict Mode)
-- [x] **Phase 4**: Centralized Response & State Typing
-- [ ] **Phase 5**: Unit Testing with Jest & RTL (Upcoming)
+- `npm run dev`: Starts the development environment (Backend/Frontend respectively).
+- `npm run seed`: (Server) Populates MongoDB with mock events and users using Faker.js.
+- `node generateDocs.js`: (Server) Re-generates `API_SPEC.md` based on current routes.
 
 ---
 
 ## 🤝 Contact & Support
 
-Developed with ❤️ by **Anil Pullagura**.
-Feel free to reach out for collaboration or questions regarding the architecture!
+Designed & Developed by **Anil Pullagura**.
+Feel free to open an issue or pull request!
