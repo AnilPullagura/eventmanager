@@ -5,6 +5,9 @@ exports.getEvents = async (req, res) => {
   try {
     const { search } = req.query;
     let query = {};
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 12;
+    const skip = (page - 1) * limit;
     if (search) {
       query = {
         $or: [
@@ -14,7 +17,7 @@ exports.getEvents = async (req, res) => {
         ],
       };
     }
-    const events = await Event.find(query);
+    const events = await Event.find(query).skip(skip).limit(limit);
     res.status(200).json({ data: events });
   } catch (err) {
     res.status(500).json({ message: "failed to fetch events" });

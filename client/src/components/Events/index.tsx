@@ -19,6 +19,7 @@ interface SearchProp {
 
 const Events = ({ searchTag }: SearchProp) => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [curentPage, setPage] = useState<number>(1);
   const [apistatus, setStatus] = useState<ApiStatus>(apiConstants.intial);
 
   const api = "https://eventmanager-api.onrender.com";
@@ -26,7 +27,7 @@ const Events = ({ searchTag }: SearchProp) => {
 
   const fetchEvents = async (): Promise<void> => {
     setStatus(apiConstants.loading);
-    const url = `${api}/api/events/?search=${searchTag}`;
+    const url = `${api}/api/events/?search=${searchTag}&page=${curentPage}&limit=12`;
     const options = {
       method: "GET",
       headers: {
