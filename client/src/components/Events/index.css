@@ -268,3 +268,22 @@
     color: #ffffff;
   }
 }
+
+.pagination-box {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.pagination-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.pagination-box button {
+  background-color: transparent;
+  border: 0px;
+  outline: none !important;
+  color: black;
+  display: flex;
+  align-items: center;
+}

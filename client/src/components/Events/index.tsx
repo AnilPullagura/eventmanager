@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { TailSpin } from "react-loader-spinner";
 import EventItem from "./eventItem.tsx";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Event, ApiStatus, EventsResponse } from "../../types";
 
 import "./index.css";
@@ -27,7 +28,7 @@ const Events = ({ searchTag }: SearchProp) => {
 
   const fetchEvents = async (): Promise<void> => {
     setStatus(apiConstants.loading);
-    const url = `${api}/api/events/?search=${searchTag}&page=${curentPage}&limit=12`;
+    const url = `${api}/api/events/?search=${searchTag}&page=${curentPage}&limit=9`;
     const options = {
       method: "GET",
       headers: {
@@ -57,7 +58,19 @@ const Events = ({ searchTag }: SearchProp) => {
     return () => {
       clearTimeout(handler);
     };
-  }, [searchTag]);
+  }, [searchTag, curentPage]);
+
+  const handlePrevious = () => {
+    if (curentPage === 1) {
+      setPage(1);
+    } else {
+      setPage((page) => page - 1);
+    }
+  };
+
+  const handleNext = () => {
+    setPage((page) => page + 1);
+  };
 
   const renderLoader = () => {
     return (
@@ -93,6 +106,18 @@ const Events = ({ searchTag }: SearchProp) => {
             <EventItem key={event._id} details={event} />
           ))}
         </ul>
+        <div className="pagination-container">
+          <div className="pagination-box">
+            <button type="button" onClick={handlePrevious}>
+              <IoIosArrowBack />
+              Prev
+            </button>
+            <button type="button" onClick={handleNext}>
+              Next
+              <IoIosArrowForward />
+            </button>
+          </div>
+        </div>
       </div>
     );
   };

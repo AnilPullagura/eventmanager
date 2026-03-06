@@ -5,6 +5,7 @@ import { TailSpin } from "react-loader-spinner";
 import { ToastContainer } from "react-toastify";
 import { FiUserPlus } from "react-icons/fi";
 import { FaRegCalendar, FaSackDollar } from "react-icons/fa6";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import EventItem from "./eventItem";
 import { Event, Stats, EventsResponse, ApiStatus } from "../../types";
 
@@ -26,6 +27,7 @@ const Admin = () => {
     totalRegistrations: 0,
     totalRevenue: 0,
   });
+  const [curentPage, setPage] = useState<number>(1);
   const [events, setEvents] = useState<Event[]>([]);
   const [apiStatus, setStatus] = useState<ApiStatus>(apiConstants.initial);
   const [searchq, setSearch] = useState<string>("");
@@ -36,7 +38,7 @@ const Admin = () => {
   const getEvents = async (): Promise<void> => {
     setStatus(apiConstants.loading);
     try {
-      const url = `${api}/api/events/?search=${searchq}`;
+      const url = `${api}/api/events/?search=${searchq}&page=${curentPage}&limit=12`;
       const response = await fetch(url);
       if (response.ok) {
         const data: EventsResponse = await response.json();
@@ -71,7 +73,19 @@ const Admin = () => {
 
     fetchStats();
     getEvents();
-  }, []);
+  }, [curentPage]);
+
+  const handlePrevious = () => {
+    if (curentPage === 1) {
+      setPage(1);
+    } else {
+      setPage((page) => page - 1);
+    }
+  };
+
+  const handleNext = () => {
+    setPage((page) => page + 1);
+  };
 
   const renderEvents = () => {
     return events.map((event) => <EventItem details={event} key={event._id} />);
@@ -161,6 +175,18 @@ const Admin = () => {
             </li>
             {renderUI()}
           </ul>
+          <div className="pagination-container">
+            <div className="pagination-box">
+              <button type="button" onClick={handlePrevious}>
+                <IoIosArrowBack />
+                Prev
+              </button>
+              <button type="button" onClick={handleNext}>
+                Next
+                <IoIosArrowForward />
+              </button>
+            </div>
+          </div>
           <ToastContainer position="top-right" autoClose={3000} />
         </div>
       </div>
