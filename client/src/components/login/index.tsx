@@ -3,13 +3,19 @@ import { useNavigate, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 import "react-toastify/dist/ReactToastify.css";
-import { User, LoginResponse } from "../../types";
+import { User, LoginResponse, ApiStatus } from "../../types";
 import { useState, useContext } from "react";
 import EventContext from "../../context";
 
 import "./index.css";
 
+const apiContstants = {
+  loading: "LOADING" as const,
+  success: "SUCCESS" as const,
+};
+
 const Login = () => {
+  const [loginStatus, setLogin] = useState<ApiStatus>(apiContstants.success);
   const [isregister, setStatus] = useState<boolean>(true);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -34,6 +40,8 @@ const Login = () => {
   };
 
   const fetchLogin = async (): Promise<void> => {
+    setLogin(apiContstants.loading);
+    setMSg("");
     const url = `${api}/api/auth/login`;
     const options = {
       method: "POST",
@@ -53,8 +61,10 @@ const Login = () => {
         loginUser(data.user.id);
         if (data.token) setToken(data.token);
         navigateToHome(data.user);
+        setLogin(apiContstants.success);
       } else {
         const data = await response.json();
+        setLogin(apiContstants.success);
         setMSg(data.message);
       }
     } catch (er) {
@@ -113,6 +123,9 @@ const Login = () => {
           onChange={(e) => setPass(e.target.value)}
         />
         <button type="submit">Login</button>
+        {loginStatus === apiContstants.loading && (
+          <p className="err-msg">Loading Please Wait...</p>
+        )}
         {errMsg && <p className="err-msg">{errMsg}</p>}
         <p>
           Don't have an account?
