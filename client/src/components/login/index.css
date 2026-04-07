@@ -89,6 +89,21 @@
     color: rgb(17, 0, 255);
     cursor: pointer;
   }
+  .password {
+    width: 90%;
+  }
+  .input-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .eye-icon {
+    cursor: pointer;
+    color: black;
+    height: 20px;
+    width: 20px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -119,11 +134,26 @@
     align-items: center;
     justify-content: center;
   }
+  .password {
+    width: 90%;
+  }
   .login-section {
     display: flex;
     gap: 10px;
     flex-direction: column;
     width: 80%;
+  }
+  .input-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .eye-icon {
+    cursor: pointer;
+    color: black;
+    height: 20px;
+    width: 20px;
   }
   .login-section input {
     padding: 10px;

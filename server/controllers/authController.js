@@ -1,65 +1,46 @@
-const User = require("../models/User.js");
-const bcrypt = require("bcrypt");
-const { generator } = require("../Utils/jwtGenerator.js");
+const authService = require("../services/authService.js");
 
 exports.registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
   try {
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "Please provide all fields" });
-    }
-
-    const exists = await User.findOne({ email });
-    if (exists) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
+    const newUser = await authService.registerNewUser(req.body);
     res.status(201).json({
       message: "User registered successfully",
       user: { id: newUser._id, name: newUser.name, email: newUser.email },
     });
   } catch (error) {
-    console.error(error);
+    if (error.message === "Provide required fields") {
+      return res.status(400).json({ message: error.message });
+    }
+    if (error.message === "User already exists") {
+      return res.status(400).json({ message: error.message });
+    }
+
     res.status(500).json({ message: "Registration failed" });
   }
 };
 
 exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
   try {
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password required" });
-    }
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
-    }
-
-    const passMatch = await bcrypt.compare(password, user.password);
-    if (!passMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    const token = generator({ email: user.email, userId: user._id });
+    const userData = await authService.loginTheUser(req.body);
     res.status(200).json({
-      token,
+      token: userData.token,
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
+        id: userData.user._id,
+        name: userData.user.name,
+        email: userData.user.email,
+        role: userData.user.role,
       },
     });
   } catch (error) {
-    console.error(error);
+    if (error.message === "Email and password required") {
+      return res.status(400).json({ message: error.message });
+    }
+    if (error.message === "User not found") {
+      return res.status(404).json({ message: error.message });
+    }
+    if (error.message === "Invalid credentials") {
+      return res.status(400).json({ message: error.message });
+    }
     res.status(500).json({ message: "Login failed" });
   }
 };
@@ -67,17 +48,17 @@ exports.loginUser = async (req, res) => {
 exports.fetchUser = async (req, res) => {
   try {
     const { userId } = req.body;
-    if (!userId) {
-      return res.status(400).json({ message: "User ID required" });
-    }
-    const details = await User.findById(userId).select("-password");
-    if (!details) {
-      return res.status(404).json({ message: "User not found" });
-    }
+    const details = await authService.getUserDetails(userId);
     res.status(200).json({
       user_details: details,
     });
-  } catch (e) {
+  } catch (error) {
+    if (error.message === "User ID required") {
+      return res.status(400).json({ message: error.message });
+    }
+    if (error.message === "User not found") {
+      return res.status(404).json({ message: error.message });
+    }
     res.status(500).json({ message: "Server Error" });
   }
 };

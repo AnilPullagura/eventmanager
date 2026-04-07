@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { User, LoginResponse, ApiStatus } from "../../types";
 import { useState, useContext } from "react";
 import EventContext from "../../context";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 import "./index.css";
 
@@ -22,6 +23,7 @@ const Login = () => {
   const [password, setPass] = useState<string>("");
   const [errMsg, setMSg] = useState<string>("");
   const navigate = useNavigate();
+  const [showPassword, setMode] = useState<boolean>(false);
 
   const { loginUser } = useContext(EventContext);
 
@@ -107,6 +109,10 @@ const Login = () => {
     }
   };
 
+  const changePassword = () => {
+    setMode((prev) => !prev);
+  };
+
   const renderLoginform = () => {
     return (
       <form onSubmit={getloginApicall} className="login-section">
@@ -116,12 +122,22 @@ const Login = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPass(e.target.value)}
-        />
+        <div className="input-box">
+          <input
+            className="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPass(e.target.value)}
+          />
+          <span onClick={changePassword}>
+            {!showPassword ? (
+              <FaEyeSlash className="eye-icon" />
+            ) : (
+              <FaEye className="eye-icon" />
+            )}
+          </span>
+        </div>
         <button type="submit">Login</button>
         {loginStatus === apiContstants.loading && (
           <p className="err-msg">Loading Please Wait...</p>

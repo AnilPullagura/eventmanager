@@ -1,42 +1,37 @@
-const Event = require("../models/Event");
-const User = require("../models/User");
+const eventService = require("../services/eventService");
 
 exports.getEvents = async (req, res) => {
   try {
     const { search } = req.query;
-    let query = {};
+
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 12;
     const skip = (page - 1) * limit;
-    if (search) {
-      query = {
-        $or: [
-          { name: { $regex: search, $options: "i" } },
-          { location: { $regex: search, $options: "i" } },
-          { category: { $regex: search, $options: "i" } },
-        ],
-      };
-    }
-    const events = await Event.find(query).skip(skip).limit(limit);
+    const events = await eventService.getAllEvents(search, page, limit, skip);
     res.status(200).json({ data: events });
   } catch (err) {
-    res.status(500).json({ message: "failed to fetch events" });
+    if (err.message === "failed to fetch events") {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: "server error" });
   }
 };
 
 exports.getEventsById = async (req, res) => {
   const { id } = req.params;
   try {
-    const event = await Event.findById(id);
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
+    const event = await eventService.getEventById(id);
     res.status(200).json({
       details: event,
     });
   } catch (err) {
+    if (err.message === "Event not found") {
+      return res.status(404).json({
+        message: err.message,
+      });
+    }
     res.status(500).json({
-      message: "Failed to fetch event",
+      message: "internal server error",
     });
   }
 };
@@ -46,39 +41,17 @@ exports.registerForEvent = async (req, res) => {
     const eventId = req.params.id;
     const userId = req.user._id;
 
-    const event = await Event.findOneAndUpdate(
-      {
-        _id: eventId,
-        availableSeats: { $gt: 0 },
-        attendees: { $ne: userId },
-      },
-      {
-        $inc: { availableSeats: -1 },
-        $push: { attendees: userId },
-      },
-      { new: true },
-    );
-
-    if (!event) {
-      return res.status(400).json({
-        message: " Event is full or you are already registered",
-      });
-    }
-
-    const user = await User.findById(userId);
-    if (user) {
-      if (!user.registeredEvents.includes(eventId)) {
-        user.registeredEvents.push(eventId);
-        await user.save();
-      }
-    }
-
+    const event = await eventService.registerUserForEvent(eventId, userId);
     res
       .status(200)
       .json({ message: "Registration successful", details: event });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    if (error.message === "Event is full") {
+      return res
+        .status(400)
+        .json({ message: "Event is full or you already registered" });
+    }
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -87,86 +60,35 @@ exports.cancelRegistration = async (req, res) => {
     const eventId = req.params.id;
     const userId = req.user._id;
 
-    const event = await Event.findById(eventId);
-    if (!event) {
+    const event = await eventService.cancelUserRegistration(eventId, userId);
+
+    res.status(204).json({ message: "Registration cancelled" });
+  } catch (error) {
+    if (error.message === "Event not found") {
       return res.status(404).json({ message: "Event not found" });
     }
-
-    if (!event.attendees.includes(userId)) {
-      return res.status(400).json({
-        message: "User not registered for this event",
-      });
+    if (error.message === "User not registered for this event") {
+      return res
+        .status(400)
+        .json({ message: "User is not registered for this event" });
     }
-
-    const user = await User.findById(userId);
-    if (!user) {
+    if (error.message === "User not found") {
       return res.status(404).json({ message: "User not found" });
     }
-
-    event.attendees = event.attendees.filter(
-      (id) => id.toString() !== userId.toString(),
-    );
-    event.availableSeats += 1;
-    await event.save();
-
-    user.registeredEvents = user.registeredEvents.filter(
-      (id) => id.toString() !== eventId.toString(),
-    );
-    await user.save();
-
-    res.status(200).json({ message: "Registration cancelled" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 exports.createEvent = async (req, res) => {
   try {
-    const {
-      name,
-      organizer,
-      date,
-      location,
-      description,
-      capacity,
-      category,
-      imageUrl,
-      price,
-    } = req.body;
-    if (
-      !name ||
-      !organizer ||
-      !date ||
-      !location ||
-      !description ||
-      !capacity ||
-      !category ||
-      !imageUrl ||
-      !price
-    ) {
-      return res.status(400).json({
-        message: "all fields are required",
-      });
-    }
-    const newEvent = new Event({
-      name,
-      organizer,
-      date,
-      location,
-      description,
-      capacity,
-      availableSeats: capacity,
-      category,
-      imageUrl,
-      price,
-    });
-    const savedEvent = await newEvent.save();
+    const savedEvent = await eventService.createNewEvent(req.body);
     res
       .status(201)
       .json({ message: "Event created Successfully", details: savedEvent });
   } catch (err) {
-    console.error(err);
+    if (err.message === "all fields are required") {
+      return res.status(400).json({ message: "all fields are required" });
+    }
     res.status(500).json({ message: "Failed to create event" });
   }
 };
@@ -174,18 +96,12 @@ exports.createEvent = async (req, res) => {
 exports.deleteEvent = async (req, res) => {
   try {
     const { id } = req.params;
-    const event = await Event.findByIdAndDelete(id);
-    if (!event) {
-      return res.status(404).json({ message: "Event not found" });
-    }
-
-    await User.updateMany(
-      { registeredEvents: id },
-      { $pull: { registeredEvents: id } },
-    );
-
+    const event = await eventService.deleteEventById(id);
     res.status(200).json({ message: "Event deleted successfully" });
   } catch (er) {
+    if (er.message === "Event not found") {
+      return res.status(404).json({ message: "Event not found" });
+    }
     res.status(500).json({ message: "Failed to delete event" });
   }
 };
@@ -193,16 +109,14 @@ exports.deleteEvent = async (req, res) => {
 exports.getMyRegisterdEvents = async (req, res) => {
   try {
     const userId = req.user._id;
-    const user = await User.findById(userId).populate("registeredEvents");
-    if (!user) {
-      return res.status(404).json({
-        message: "user not found",
-      });
-    }
+    const user = await eventService.getAllRegisteredEvents(userId);
     res.status(200).json({
       history_events: user.registeredEvents,
     });
   } catch (er) {
+    if (er.message === "user not found") {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.status(500).json({ message: "server error" });
   }
 };
