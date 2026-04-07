@@ -64,6 +64,7 @@ const Admin = () => {
 
         if (response.data.success) {
           setStats(response.data.data);
+          console.log(response.data.data);
         }
       } catch (err: any) {
         console.error("Error fetching admin stats:", err);

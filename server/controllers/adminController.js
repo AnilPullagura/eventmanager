@@ -5,7 +5,7 @@ exports.getDashboardStats = async (req, res) => {
     const adminStats = await adminService.getAdminDashboardStats();
     res.status(200).json({
       success: true,
-      data: { adminStats },
+      data: adminStats,
     });
   } catch (error) {
     res.status(500).json({
